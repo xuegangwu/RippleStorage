@@ -48,14 +48,15 @@ class Config:
     OASIS_DEFAULT_MAX_ROUNDS = int(os.environ.get('OASIS_DEFAULT_MAX_ROUNDS', '10'))
     OASIS_SIMULATION_DATA_DIR = os.path.join(os.path.dirname(__file__), '../uploads/simulations')
     
-    # OASIS平台可用动作配置
+    # RippleStorage 储能系统可用动作配置
+    # twitter -> peak_shaving (峰谷套利)
     OASIS_TWITTER_ACTIONS = [
-        'CREATE_POST', 'LIKE_POST', 'REPOST', 'FOLLOW', 'DO_NOTHING', 'QUOTE_POST'
+        'CHARGE', 'DISCHARGE', 'IDLE', 'PRICE_SIGNAL', 'EFFICIENCY_REPORT'
     ]
+    # reddit -> demand_response (需量管理)
     OASIS_REDDIT_ACTIONS = [
-        'LIKE_POST', 'DISLIKE_POST', 'CREATE_POST', 'CREATE_COMMENT',
-        'LIKE_COMMENT', 'DISLIKE_COMMENT', 'SEARCH_POSTS', 'SEARCH_USER',
-        'TREND', 'REFRESH', 'DO_NOTHING', 'FOLLOW', 'MUTE'
+        'PEAK_CUT', 'VALLEY_FILL', 'DEMAND_RESPONSE', 'LOAD_FORECAST',
+        'GRID_FEED_IN', 'IDLE', 'SAFETY_CHECK', 'POWER_QUALITY_REPORT'
     ]
     
     # Report Agent配置

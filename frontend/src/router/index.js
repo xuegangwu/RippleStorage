@@ -13,6 +13,14 @@ const routes = [
     component: Home
   },
   {
+    path: '/showcase',
+    name: 'Showcase',
+    // 3D 展示页面使用独立 HTML，通过 iframe 或重定向加载
+    beforeEnter: () => {
+      window.location.href = '/3d-showcase.html'
+    }
+  },
+  {
     path: '/process/:projectId',
     name: 'Process',
     component: Process,

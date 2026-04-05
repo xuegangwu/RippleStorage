@@ -516,6 +516,15 @@
             >
               ← {{ $t('step2.backToGraphBuild') }}
             </button>
+            <div class="action-center">
+              <button 
+                class="action-btn showcase"
+                @click="openShowcase"
+              >
+                <span class="showcase-icon">🧊</span>
+                <span>3D 产品预览</span>
+              </button>
+            </div>
             <button 
               class="action-btn primary"
               :disabled="phase < 4"
@@ -633,6 +642,7 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import {
   prepareSimulation,
@@ -643,6 +653,7 @@ import {
 } from '../api/simulation'
 
 const { t } = useI18n()
+const router = useRouter()
 
 const props = defineProps({
   simulationId: String,  // 从父组件传入
@@ -755,6 +766,10 @@ const handleStartSimulation = () => {
   }
   
   emit('next-step', params)
+}
+
+const openShowcase = () => {
+  window.open('/3d-showcase.html?explode=1', '_blank')
 }
 
 const truncateBio = (bio) => {
@@ -1228,11 +1243,37 @@ onUnmounted(() => {
 
 .action-group.dual {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
 }
 
 .action-group.dual .action-btn {
   width: 100%;
+}
+
+.action-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn.showcase {
+  background: transparent;
+  color: #00a37a;
+  border: 1px solid #00d9a5;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.action-btn.showcase:hover {
+  background: rgba(0, 217, 165, 0.08);
+  transform: translateY(-1px);
+}
+.showcase-icon {
+  font-size: 16px;
+  line-height: 1;
 }
 
 /* Info Card */

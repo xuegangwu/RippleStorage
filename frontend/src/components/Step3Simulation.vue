@@ -9,7 +9,7 @@
             <svg class="platform-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
             </svg>
-            <span class="platform-name">Info Plaza</span>
+            <span class="platform-name">峰谷套利</span>
             <span v-if="runStatus.twitter_completed" class="status-badge">
               <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -34,11 +34,10 @@
           <div class="actions-tooltip">
             <div class="tooltip-title">Available Actions</div>
             <div class="tooltip-actions">
-              <span class="tooltip-action">POST</span>
-              <span class="tooltip-action">LIKE</span>
-              <span class="tooltip-action">REPOST</span>
-              <span class="tooltip-action">QUOTE</span>
-              <span class="tooltip-action">FOLLOW</span>
+              <span class="tooltip-action">CHARGE</span>
+              <span class="tooltip-action">DISCHARGE</span>
+              <span class="tooltip-action">PRICE_SIGNAL</span>
+              <span class="tooltip-action">EFFICIENCY_REPORT</span>
               <span class="tooltip-action">IDLE</span>
             </div>
           </div>
@@ -50,7 +49,7 @@
             <svg class="platform-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
             </svg>
-            <span class="platform-name">Topic Community</span>
+            <span class="platform-name">需量管理</span>
             <span v-if="runStatus.reddit_completed" class="status-badge">
               <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -75,15 +74,12 @@
           <div class="actions-tooltip">
             <div class="tooltip-title">Available Actions</div>
             <div class="tooltip-actions">
-              <span class="tooltip-action">POST</span>
-              <span class="tooltip-action">COMMENT</span>
-              <span class="tooltip-action">LIKE</span>
-              <span class="tooltip-action">DISLIKE</span>
-              <span class="tooltip-action">SEARCH</span>
-              <span class="tooltip-action">TREND</span>
-              <span class="tooltip-action">FOLLOW</span>
-              <span class="tooltip-action">MUTE</span>
-              <span class="tooltip-action">REFRESH</span>
+              <span class="tooltip-action">PEAK_CUT</span>
+              <span class="tooltip-action">VALLEY_FILL</span>
+              <span class="tooltip-action">DEMAND_RESPONSE</span>
+              <span class="tooltip-action">LOAD_FORECAST</span>
+              <span class="tooltip-action">GRID_FEED_IN</span>
+              <span class="tooltip-action">SAFETY_CHECK</span>
               <span class="tooltip-action">IDLE</span>
             </div>
           </div>
@@ -157,101 +153,63 @@
               </div>
               
               <div class="card-body">
-                <!-- CREATE_POST: 发布帖子 -->
-                <div v-if="action.action_type === 'CREATE_POST' && action.action_args?.content" class="content-text main-text">
-                  {{ action.action_args.content }}
-                </div>
-
-                <!-- QUOTE_POST: 引用帖子 -->
-                <template v-if="action.action_type === 'QUOTE_POST'">
-                  <div v-if="action.action_args?.quote_content" class="content-text">
-                    {{ action.action_args.quote_content }}
+                <!-- CHARGE: 充电 -->
+                <template v-if="action.action_type === 'CHARGE'">
+                  <div class="energy-info charge">
+                    <svg class="icon-small" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    <span class="energy-label">充电 {{ action.action_args?.power_kw || 0 }} kW</span>
                   </div>
-                  <div v-if="action.action_args?.original_content" class="quoted-block">
-                    <div class="quote-header">
-                      <svg class="icon-small" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                      <span class="quote-label">@{{ action.action_args.original_author_name || 'User' }}</span>
-                    </div>
-                    <div class="quote-text">
-                      {{ truncateContent(action.action_args.original_content, 150) }}
-                    </div>
-                  </div>
+                  <div class="energy-detail">SOC: {{ (action.action_args?.soc_before * 100).toFixed(1) }}% → 电价: {{ action.action_args?.price }} 元/kWh | {{ action.action_args?.reason }}</div>
                 </template>
 
-                <!-- REPOST: 转发帖子 -->
-                <template v-if="action.action_type === 'REPOST'">
-                  <div class="repost-info">
-                    <svg class="icon-small" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
-                    <span class="repost-label">Reposted from @{{ action.action_args?.original_author_name || 'User' }}</span>
+                <!-- DISCHARGE: 放电 -->
+                <template v-if="action.action_type === 'DISCHARGE'">
+                  <div class="energy-info discharge">
+                    <svg class="icon-small" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"></path></svg>
+                    <span class="energy-label">放电 {{ action.action_args?.power_kw || 0 }} kW</span>
                   </div>
-                  <div v-if="action.action_args?.original_content" class="repost-content">
-                    {{ truncateContent(action.action_args.original_content, 200) }}
-                  </div>
+                  <div class="energy-detail">SOC: {{ (action.action_args?.soc_before * 100).toFixed(1) }}% → 电价: {{ action.action_args?.price }} 元/kWh | {{ action.action_args?.reason }}</div>
                 </template>
 
-                <!-- LIKE_POST: 点赞帖子 -->
-                <template v-if="action.action_type === 'LIKE_POST'">
-                  <div class="like-info">
-                    <svg class="icon-small filled" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                    <span class="like-label">Liked @{{ action.action_args?.post_author_name || 'User' }}'s post</span>
+                <!-- PEAK_CUT: 削峰 -->
+                <template v-if="action.action_type === 'PEAK_CUT'">
+                  <div class="energy-info peak-cut">
+                    <svg class="icon-small" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    <span class="energy-label">削峰 {{ action.action_args?.power_kw || 0 }} kW</span>
                   </div>
-                  <div v-if="action.action_args?.post_content" class="liked-content">
-                    "{{ truncateContent(action.action_args.post_content, 120) }}"
-                  </div>
+                  <div class="energy-detail">负荷: {{ action.action_args?.load }} kW | SOC: {{ (action.action_args?.soc_before * 100).toFixed(1) }}% | {{ action.action_args?.reason }}</div>
                 </template>
 
-                <!-- CREATE_COMMENT: 发表评论 -->
-                <template v-if="action.action_type === 'CREATE_COMMENT'">
-                  <div v-if="action.action_args?.content" class="content-text">
+                <!-- VALLEY_FILL: 填谷 -->
+                <template v-if="action.action_type === 'VALLEY_FILL'">
+                  <div class="energy-info valley-fill">
+                    <svg class="icon-small" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 17 18 17 15 8 9 21 6 12 2 12"></polyline></svg>
+                    <span class="energy-label">填谷 {{ action.action_args?.power_kw || 0 }} kW</span>
+                  </div>
+                  <div class="energy-detail">负荷: {{ action.action_args?.load }} kW | SOC: {{ (action.action_args?.soc_before * 100).toFixed(1) }}% | {{ action.action_args?.reason }}</div>
+                </template>
+
+                <!-- IDLE: 待机 -->
+                <template v-if="action.action_type === 'IDLE'">
+                  <div class="energy-info idle">
+                    <svg class="icon-small" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    <span class="energy-label">待机</span>
+                  </div>
+                  <div class="energy-detail">SOC: {{ (action.action_args?.soc_before * 100).toFixed(1) }}% | 电价: {{ action.action_args?.price }} 元/kWh | {{ action.action_args?.reason }}</div>
+                </template>
+
+                <!-- 通用回退：其他能源动作 -->
+                <template v-if="!['CHARGE', 'DISCHARGE', 'PEAK_CUT', 'VALLEY_FILL', 'IDLE'].includes(action.action_type)">
+                  <div class="energy-info">
+                    <span class="energy-label">{{ action.action_type }}</span>
+                  </div>
+                  <div v-if="action.action_args?.power_kw !== undefined" class="energy-detail">
+                    功率: {{ action.action_args.power_kw }} kW | SOC: {{ (action.action_args?.soc_before * 100).toFixed(1) }}% | {{ action.action_args?.reason }}
+                  </div>
+                  <div v-else-if="action.action_args?.content" class="content-text">
                     {{ action.action_args.content }}
                   </div>
-                  <div v-if="action.action_args?.post_id" class="comment-context">
-                    <svg class="icon-small" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                    <span>Reply to post #{{ action.action_args.post_id }}</span>
-                  </div>
                 </template>
-
-                <!-- SEARCH_POSTS: 搜索帖子 -->
-                <template v-if="action.action_type === 'SEARCH_POSTS'">
-                  <div class="search-info">
-                    <svg class="icon-small" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <span class="search-label">Search Query:</span>
-                    <span class="search-query">"{{ action.action_args?.query || '' }}"</span>
-                  </div>
-                </template>
-
-                <!-- FOLLOW: 关注用户 -->
-                <template v-if="action.action_type === 'FOLLOW'">
-                  <div class="follow-info">
-                    <svg class="icon-small" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-                    <span class="follow-label">Followed @{{ action.action_args?.target_user || action.action_args?.user_id || 'User' }}</span>
-                  </div>
-                </template>
-
-                <!-- UPVOTE / DOWNVOTE -->
-                <template v-if="action.action_type === 'UPVOTE_POST' || action.action_type === 'DOWNVOTE_POST'">
-                  <div class="vote-info">
-                    <svg v-if="action.action_type === 'UPVOTE_POST'" class="icon-small" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                    <svg v-else class="icon-small" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    <span class="vote-label">{{ action.action_type === 'UPVOTE_POST' ? 'Upvoted' : 'Downvoted' }} Post</span>
-                  </div>
-                  <div v-if="action.action_args?.post_content" class="voted-content">
-                    "{{ truncateContent(action.action_args.post_content, 120) }}"
-                  </div>
-                </template>
-
-                <!-- DO_NOTHING: 无操作（静默） -->
-                <template v-if="action.action_type === 'DO_NOTHING'">
-                  <div class="idle-info">
-                    <svg class="icon-small" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                    <span class="idle-label">Action Skipped</span>
-                  </div>
-                </template>
-
-                <!-- 通用回退：未知类型或有 content 但未被上述处理 -->
-                <div v-if="!['CREATE_POST', 'QUOTE_POST', 'REPOST', 'LIKE_POST', 'CREATE_COMMENT', 'SEARCH_POSTS', 'FOLLOW', 'UPVOTE_POST', 'DOWNVOTE_POST', 'DO_NOTHING'].includes(action.action_type) && action.action_args?.content" class="content-text">
-                  {{ action.action_args.content }}
-                </div>
               </div>
 
               <div class="card-footer">
@@ -502,12 +460,12 @@ const fetchRunStatus = async () => {
       
       // 分别检测各平台的轮次变化并输出日志
       if (data.twitter_current_round > prevTwitterRound.value) {
-        addLog(`[Plaza] R${data.twitter_current_round}/${data.total_rounds} | T:${data.twitter_simulated_hours || 0}h | A:${data.twitter_actions_count}`)
+        addLog(`[峰谷套利] R${data.twitter_current_round}/${data.total_rounds} | T:${data.twitter_simulated_hours || 0}h | A:${data.twitter_actions_count}`)
         prevTwitterRound.value = data.twitter_current_round
       }
       
       if (data.reddit_current_round > prevRedditRound.value) {
-        addLog(`[Community] R${data.reddit_current_round}/${data.total_rounds} | T:${data.reddit_simulated_hours || 0}h | A:${data.reddit_actions_count}`)
+        addLog(`[需量管理] R${data.reddit_current_round}/${data.total_rounds} | T:${data.reddit_simulated_hours || 0}h | A:${data.reddit_actions_count}`)
         prevRedditRound.value = data.reddit_current_round
       }
       
@@ -594,6 +552,18 @@ const fetchRunStatusDetail = async () => {
 // Helpers
 const getActionTypeLabel = (type) => {
   const labels = {
+    'CHARGE': '充电',
+    'DISCHARGE': '放电',
+    'IDLE': '待机',
+    'PEAK_CUT': '削峰',
+    'VALLEY_FILL': '填谷',
+    'PRICE_SIGNAL': '电价信号',
+    'EFFICIENCY_REPORT': '效率报告',
+    'DEMAND_RESPONSE': '需求响应',
+    'LOAD_FORECAST': '负荷预测',
+    'GRID_FEED_IN': '并网反馈',
+    'SAFETY_CHECK': '安全检查',
+    'POWER_QUALITY_REPORT': '电能质量',
     'CREATE_POST': 'POST',
     'REPOST': 'REPOST',
     'LIKE_POST': 'LIKE',
@@ -611,6 +581,18 @@ const getActionTypeLabel = (type) => {
 
 const getActionTypeClass = (type) => {
   const classes = {
+    'CHARGE': 'badge-post',
+    'DISCHARGE': 'badge-action',
+    'PEAK_CUT': 'badge-action',
+    'VALLEY_FILL': 'badge-post',
+    'IDLE': 'badge-idle',
+    'PRICE_SIGNAL': 'badge-meta',
+    'EFFICIENCY_REPORT': 'badge-meta',
+    'DEMAND_RESPONSE': 'badge-action',
+    'LOAD_FORECAST': 'badge-meta',
+    'GRID_FEED_IN': 'badge-comment',
+    'SAFETY_CHECK': 'badge-comment',
+    'POWER_QUALITY_REPORT': 'badge-meta',
     'CREATE_POST': 'badge-post',
     'REPOST': 'badge-action',
     'LIKE_POST': 'badge-action',
@@ -1263,5 +1245,25 @@ onUnmounted(() => {
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin-right: 6px;
+}
+
+/* RippleStorage 能源动作样式 */
+.energy-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.energy-info.charge { color: #00D9A5; }
+.energy-info.discharge { color: #FF6B6B; }
+.energy-info.peak-cut { color: #FF9F43; }
+.energy-info.valley-fill { color: #54A0FF; }
+.energy-info.idle { color: #A4B0BE; }
+.energy-detail {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #666;
+  font-family: 'JetBrains Mono', monospace;
 }
 </style>

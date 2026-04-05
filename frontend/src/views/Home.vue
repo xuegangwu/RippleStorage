@@ -2,7 +2,7 @@
   <div class="home-container">
     <!-- 顶部导航栏 -->
     <nav class="navbar">
-      <div class="nav-brand">MIROFISH</div>
+      <div class="nav-brand">RIPPLESTORAGE</div>
       <div class="nav-links">
         <LanguageSwitcher />
         <a href="https://github.com/666ghj/MiroFish" target="_blank" class="github-link">
@@ -44,13 +44,29 @@
         <div class="hero-right">
           <!-- Logo 区域 -->
           <div class="logo-container">
-            <img src="../assets/logo/MiroFish_logo_left.jpeg" alt="MiroFish Logo" class="hero-logo" />
+            <img src="../assets/logo/MiroFish_logo_left.jpeg" alt="RippleStorage Logo" class="hero-logo" />
           </div>
           
           <button class="scroll-down-btn" @click="scrollToBottom">
             ↓
           </button>
         </div>
+      </section>
+
+      <!-- 3D 展示入口横幅 -->
+      <section class="showcase-banner">
+        <div class="showcase-content">
+          <div class="showcase-text">
+            <div class="showcase-tag">3D 数字孪生</div>
+            <h3 class="showcase-title">沉浸式探索储能产品内外结构</h3>
+            <p class="showcase-desc">支持爆炸图拆解、剖面透视、部件高亮与参数查看。零模型加载，纯 Web 原生 3D 实时渲染。</p>
+          </div>
+          <button class="showcase-btn" @click="router.push('/showcase')">
+            <span>进入 3D 展厅</span>
+            <span class="btn-arrow">→</span>
+          </button>
+        </div>
+        <div class="showcase-glow"></div>
       </section>
 
       <!-- 下半部分：双栏布局 -->
@@ -538,6 +554,82 @@ const startSimulation = () => {
 
 .scroll-down-btn:hover {
   border-color: var(--orange);
+}
+
+.showcase-banner {
+  position: relative;
+  margin: 0 0 60px;
+  padding: 28px 32px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #02080f 0%, #0b1c2e 100%);
+  border: 1px solid rgba(0, 217, 165, 0.25);
+  overflow: hidden;
+}
+.showcase-glow {
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(0, 217, 165, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.showcase-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.showcase-text {
+  flex: 1;
+  min-width: 260px;
+}
+.showcase-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #00d9a5;
+  background: rgba(0, 217, 165, 0.12);
+  border: 1px solid rgba(0, 217, 165, 0.3);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+}
+.showcase-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+  letter-spacing: -0.2px;
+}
+.showcase-desc {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  max-width: 560px;
+}
+.showcase-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #00d9a5 0%, #00a37a 100%);
+  color: #02080f;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.showcase-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 217, 165, 0.35);
 }
 
 /* Dashboard 双栏布局 */
