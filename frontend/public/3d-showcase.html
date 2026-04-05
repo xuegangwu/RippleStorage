@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RippleStorage 3D - 工商业储能产品结构</title>
+  <title>RippleStorage 3D - 工商业储能产品系列</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { margin: 0; overflow: hidden; background: #02060a; font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif; }
@@ -16,14 +16,10 @@
       border: 1px solid rgba(0, 217, 165, 0.12);
       box-shadow: 0 10px 40px rgba(0,0,0,0.5);
     }
-    .glow-text {
-      text-shadow: 0 0 14px rgba(0, 217, 165, 0.55);
-    }
+    .glow-text { text-shadow: 0 0 14px rgba(0, 217, 165, 0.55); }
     .btn-primary {
       background: linear-gradient(135deg, #00d9a5 0%, #00a37a 100%);
-      color: #02080f;
-      font-weight: 700;
-      transition: all .2s ease;
+      color: #02080f; font-weight: 700; transition: all .2s ease;
     }
     .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0, 217, 165, 0.4); }
     .btn-secondary {
@@ -38,10 +34,7 @@
       color: #00d9a5;
       border: 1px solid rgba(0, 217, 165, 0.25);
     }
-    .nav-item {
-      transition: all .15s ease;
-      border-left: 2px solid transparent;
-    }
+    .nav-item { transition: all .15s ease; border-left: 2px solid transparent; }
     .nav-item:hover { background: rgba(0,217,165,0.08); border-left-color: rgba(0,217,165,0.6); }
     .nav-item.active { background: rgba(0,217,165,0.15); border-left-color: #00d9a5; }
     .info-enter { animation: slideIn .35s ease both; }
@@ -50,10 +43,6 @@
     @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,217,165,0.5); } 70% { box-shadow: 0 0 0 6px rgba(0,217,165,0); } 100% { box-shadow: 0 0 0 0 rgba(0,217,165,0); } }
     .stat-bar-bg { background: rgba(255,255,255,0.08); border-radius: 999px; height: 6px; overflow: hidden; }
     .stat-bar-fill { height: 100%; border-radius: 999px; transition: width .6s ease; }
-    .label-3d {
-      pointer-events: none;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-    }
     .label-card {
       background: rgba(0,0,0,0.55);
       border: 1px solid rgba(0,217,165,0.35);
@@ -65,6 +54,8 @@
       pointer-events: none;
       backdrop-filter: blur(4px);
     }
+    .tab-btn { transition: all .15s ease; }
+    .tab-btn.active { background: rgba(0,217,165,0.15); border-color: rgba(0,217,165,0.6); color: #00d9a5; }
   </style>
   <script type="importmap">
   {
@@ -78,7 +69,6 @@
 <body>
   <div id="canvas-container"></div>
   <div id="css2d-container"></div>
-  <div id="error-log" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 hidden max-w-xl w-full p-6 rounded-xl glass text-red-300 text-sm whitespace-pre-wrap"></div>
 
   <!-- Header -->
   <div class="fixed top-0 left-0 right-0 z-20 flex items-center justify-between px-6 py-4 pointer-events-none">
@@ -92,19 +82,29 @@
         <div class="w-8 h-8 rounded-md bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-white font-bold">R</div>
         <div>
           <h1 class="text-white text-lg font-semibold tracking-wide">RippleStorage <span class="text-emerald-400">3D</span></h1>
-          <p class="text-slate-400 text-xs">工商业储能产品结构可视化</p>
+          <p class="text-slate-400 text-xs">工商业储能产品系列可视化</p>
         </div>
       </div>
     </div>
     <div class="flex items-center gap-3 pointer-events-auto">
       <div class="hidden md:flex items-center gap-2 text-xs text-slate-300 mr-2">
-        <span class="px-2 py-1 rounded bg-white/5 border border-white/10">2.5MWh / 5MWh 集装箱式储能</span>
-        <span class="px-2 py-1 rounded bg-white/5 border border-white/10">液冷温控 · 多级消防 · 智能 BMS</span>
+        <span class="px-2 py-1 rounded bg-white/5 border border-white/10">堆叠一体机</span>
+        <span class="px-2 py-1 rounded bg-white/5 border border-white/10">户外柜一体机</span>
+        <span class="px-2 py-1 rounded bg-white/5 border border-white/10">集装箱式储能</span>
       </div>
       <a href="/" class="btn-primary px-4 py-2 rounded-lg text-sm hidden sm:inline-flex items-center gap-2">
         <span>开始推演</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
+    </div>
+  </div>
+
+  <!-- Product Switcher Tabs -->
+  <div class="fixed top-20 left-1/2 -translate-x-1/2 z-20 hidden md:block">
+    <div class="glass rounded-full px-2 py-1.5 flex items-center gap-1">
+      <button class="tab-btn active px-4 py-1.5 rounded-full text-sm text-slate-300 border border-transparent" data-key="stacked">工商业堆叠一体机</button>
+      <button class="tab-btn px-4 py-1.5 rounded-full text-sm text-slate-300 border border-transparent" data-key="cabinet">工商业一体机</button>
+      <button class="tab-btn px-4 py-1.5 rounded-full text-sm text-slate-300 border border-transparent" data-key="container">大型储能集装箱</button>
     </div>
   </div>
 
@@ -129,12 +129,12 @@
       </div>
       <button id="btn-close-info" class="text-slate-400 hover:text-white text-xl leading-none">×</button>
     </div>
-    <p id="info-desc" class="text-sm text-slate-300 leading-relaxed mb-4">采用磷酸铁锂电芯，单簇容量 215kWh，支持 1C 充放电，循环寿命超过 8000 次。</p>
+    <p id="info-desc" class="text-sm text-slate-300 leading-relaxed mb-4"></p>
     <div class="grid grid-cols-2 gap-2 text-xs">
-      <div class="bg-white/5 rounded-lg p-2 border border-white/10"><div class="text-slate-400">额定容量</div><div id="info-spec1" class="text-white font-semibold mt-0.5">215 kWh</div></div>
-      <div class="bg-white/5 rounded-lg p-2 border border-white/10"><div class="text-slate-400">工作电压</div><div id="info-spec2" class="text-white font-semibold mt-0.5">768 Vdc</div></div>
-      <div class="bg-white/5 rounded-lg p-2 border border-white/10"><div class="text-slate-400">循环寿命</div><div id="info-spec3" class="text-white font-semibold mt-0.5">≥8000 次</div></div>
-      <div class="bg-white/5 rounded-lg p-2 border border-white/10"><div class="text-slate-400">防护等级</div><div id="info-spec4" class="text-white font-semibold mt-0.5">IP55</div></div>
+      <div class="bg-white/5 rounded-lg p-2 border border-white/10"><div class="text-slate-400" id="spec-label-1">额定容量</div><div id="info-spec1" class="text-white font-semibold mt-0.5">-</div></div>
+      <div class="bg-white/5 rounded-lg p-2 border border-white/10"><div class="text-slate-400" id="spec-label-2">工作电压</div><div id="info-spec2" class="text-white font-semibold mt-0.5">-</div></div>
+      <div class="bg-white/5 rounded-lg p-2 border border-white/10"><div class="text-slate-400" id="spec-label-3">循环寿命</div><div id="info-spec3" class="text-white font-semibold mt-0.5">-</div></div>
+      <div class="bg-white/5 rounded-lg p-2 border border-white/10"><div class="text-slate-400" id="spec-label-4">防护等级</div><div id="info-spec4" class="text-white font-semibold mt-0.5">-</div></div>
     </div>
   </div>
 
@@ -145,18 +145,9 @@
       <div class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></div>
     </div>
     <div class="space-y-3 text-xs">
-      <div>
-        <div class="flex justify-between text-slate-300 mb-1"><span>系统 SOC</span><span id="stat-soc" class="text-white font-semibold">78%</span></div>
-        <div class="stat-bar-bg"><div id="bar-soc" class="stat-bar-fill bg-emerald-400" style="width:78%"></div></div>
-      </div>
-      <div>
-        <div class="flex justify-between text-slate-300 mb-1"><span>实时功率</span><span id="stat-power" class="text-white font-semibold">420 kW</span></div>
-        <div class="stat-bar-bg"><div id="bar-power" class="stat-bar-fill bg-amber-400" style="width:56%"></div></div>
-      </div>
-      <div>
-        <div class="flex justify-between text-slate-300 mb-1"><span>电芯温度</span><span id="stat-temp" class="text-white font-semibold">28.4 ℃</span></div>
-        <div class="stat-bar-bg"><div id="bar-temp" class="stat-bar-fill bg-sky-400" style="width:35%"></div></div>
-      </div>
+      <div><div class="flex justify-between text-slate-300 mb-1"><span>系统 SOC</span><span id="stat-soc" class="text-white font-semibold">78%</span></div><div class="stat-bar-bg"><div id="bar-soc" class="stat-bar-fill bg-emerald-400" style="width:78%"></div></div></div>
+      <div><div class="flex justify-between text-slate-300 mb-1"><span>实时功率</span><span id="stat-power" class="text-white font-semibold">420 kW</span></div><div class="stat-bar-bg"><div id="bar-power" class="stat-bar-fill bg-amber-400" style="width:56%"></div></div></div>
+      <div><div class="flex justify-between text-slate-300 mb-1"><span>电芯温度</span><span id="stat-temp" class="text-white font-semibold">28.4 ℃</span></div><div class="stat-bar-bg"><div id="bar-temp" class="stat-bar-fill bg-sky-400" style="width:35%"></div></div></div>
     </div>
   </div>
 
@@ -177,15 +168,11 @@
   <div class="fixed bottom-6 left-6 z-20 glass rounded-xl px-4 py-3 text-xs text-slate-300 max-w-xs hidden md:block">
     <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> 鼠标左键拖拽旋转 · 滚轮缩放</div>
     <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> 点击部件查看详情 / 左侧导航聚焦</div>
-    <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> 快捷键: 空格爆炸 · Tab剖面 · R重置 · 1~7聚焦</div>
+    <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> 快捷键: 空格爆炸 · Tab剖面 · R重置 · 1~6聚焦</div>
   </div>
 
   <script>
-    window.onerror = function(msg, url, line, col, err) {
-      const el = document.getElementById('error-log');
-      if (el) { el.classList.remove('hidden'); el.textContent = '全局错误: ' + msg + ' (行 ' + line + ')'; }
-      console.error(msg, url, line, col, err);
-    };
+    window.onerror = function(msg, url, line, col, err) { console.error(msg, url, line, col, err); };
   </script>
   <script type="module">
     import * as THREE from 'three';
@@ -195,78 +182,9 @@
     import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
     import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
     import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-    import { Reflector } from 'three/addons/objects/Reflector.js';
     import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 
-    try {
-    const container = document.getElementById('canvas-container');
-    const css2dContainer = document.getElementById('css2d-container');
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x02060a);
-    scene.fog = new THREE.FogExp2(0x02060a, 0.012);
-
-    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(16, 10, 20);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.0;
-    container.appendChild(renderer.domElement);
-
-    const cssRenderer = new CSS2DRenderer({ element: css2dContainer });
-    cssRenderer.setSize(window.innerWidth, window.innerHeight);
-
-    const composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-    const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.45, 0.25, 0.85);
-    composer.addPass(bloomPass);
-
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true; controls.dampingFactor = 0.06;
-    controls.maxPolarAngle = Math.PI / 2 - 0.02;
-    controls.minDistance = 6; controls.maxDistance = 55;
-
-    // --- Environment ---
-    const pmremGenerator = new THREE.PMREMGenerator(renderer);
-    pmremGenerator.compileEquirectangularShader();
-    const hdrUrl = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/autoshop_01_1k.hdr';
-    new RGBELoader().load(hdrUrl, (texture) => {
-      const envMap = pmremGenerator.fromEquirectangular(texture).texture;
-      scene.environment = envMap;
-      scene.background = new THREE.Color(0x02060a);
-      texture.dispose();
-    }, undefined, () => {
-      const roomEnv = new RoomEnvironment();
-      scene.environment = pmremGenerator.fromScene(roomEnv).texture;
-    });
-
-    // --- Lights ---
-    const ambient = new THREE.AmbientLight(0xffffff, 0.15);
-    scene.add(ambient);
-
-    const dirLight = new THREE.DirectionalLight(0xffffff, 2.0);
-    dirLight.position.set(12, 28, 12);
-    dirLight.castShadow = true;
-    dirLight.shadow.mapSize.set(2048, 2048);
-    dirLight.shadow.bias = -0.0005;
-    scene.add(dirLight);
-
-    const fillLight = new THREE.DirectionalLight(0x00d9a5, 0.45);
-    fillLight.position.set(-18, 8, -12);
-    scene.add(fillLight);
-
-    const spot = new THREE.SpotLight(0x00aaff, 1.5);
-    spot.position.set(0, 22, -22);
-    spot.lookAt(0,0,0);
-    spot.angle = Math.PI / 6;
-    spot.penumbra = 0.5;
-    scene.add(spot);
-
-    // --- Materials ---
+    // ===== Shared materials =====
     const shellMat = new THREE.MeshPhysicalMaterial({ color: 0xddeeff, roughness: 0.35, metalness: 0.65, clearcoat: 0.3, clearcoatRoughness: 0.2 });
     const shellCutawayMat = new THREE.MeshPhysicalMaterial({ color: 0xddeeff, roughness: 0.35, metalness: 0.65, transparent: true, opacity: 0.10, side: THREE.DoubleSide, depthWrite: false });
     const darkMetalMat = new THREE.MeshStandardMaterial({ color: 0x263748, roughness: 0.40, metalness: 0.80 });
@@ -279,25 +197,7 @@
     const pipeMat = new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.25, metalness: 0.50 });
     const cableMat = new THREE.MeshStandardMaterial({ color: 0xff3333, roughness: 0.4, metalness: 0.2 });
     const commCableMat = new THREE.MeshStandardMaterial({ color: 0x3b82f6, roughness: 0.4, metalness: 0.2 });
-
-    // --- Helpers: Canvas textures ---
-    function makeWaveformCanvas() {
-      const c = document.createElement('canvas'); c.width = 256; c.height = 128;
-      const ctx = c.getContext('2d');
-      function draw() {
-        ctx.fillStyle = '#000000'; ctx.fillRect(0,0,256,128);
-        ctx.strokeStyle = '#00d9a5'; ctx.lineWidth = 2;
-        ctx.beginPath();
-        for (let x=0;x<256;x+=4) { const y = 64 + 30*Math.sin(x*0.05 + Date.now()*0.002) + 15*Math.sin(x*0.12); if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }
-        ctx.stroke();
-        ctx.fillStyle = 'rgba(0,217,165,0.15)'; ctx.lineTo(256,128); ctx.lineTo(0,128); ctx.fill();
-        tex.needsUpdate = true;
-      }
-      const tex = new THREE.CanvasTexture(c);
-      tex.colorSpace = THREE.SRGBColorSpace;
-      return { canvas: c, texture: tex, draw };
-    }
-    const bmsWave = makeWaveformCanvas();
+    const floorMat = new THREE.MeshPhysicalMaterial({ color: 0x040a10, roughness: 0.15, metalness: 0.45, clearcoat: 0.25 });
 
     function makePanelCanvas(text) {
       const c = document.createElement('canvas'); c.width = 128; c.height = 64;
@@ -309,251 +209,338 @@
       const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; return tex;
     }
 
-    // --- Container Shell (Corrugated) ---
-    const containerGroup = new THREE.Group(); scene.add(containerGroup);
-    const shellW = 13.6, shellH = 3.0, shellD = 3.0;
-    const halfW = shellW/2, halfH = shellH/2, halfD = shellD/2;
-    const shellGroup = new THREE.Group();
-
-    function corrugatedWall(w, h, depth, vertical, segments) {
-      const g = new THREE.Group();
-      const segSize = (vertical ? w : h) / segments;
-      const geo = vertical ? new THREE.BoxGeometry(segSize*0.85, h, depth) : new THREE.BoxGeometry(w, segSize*0.85, depth);
-      for (let i=0;i<segments;i++) {
-        const m = new THREE.Mesh(geo, shellMat.clone());
-        const offset = (i - (segments-1)/2) * segSize;
-        m.position.set(vertical ? offset : 0, vertical ? 0 : offset, depth>0 ? 0.02 : -0.02);
-        m.castShadow = true; m.receiveShadow = true; g.add(m);
-      }
-      return g;
+    function addLabel(parent, text, x, y, z) {
+      const div = document.createElement('div'); div.className = 'label-card'; div.textContent = text;
+      const obj = new CSS2DObject(div); obj.position.set(x,y,z); parent.add(obj); return obj;
     }
+
+    // ===== Scene setup =====
+    const container = document.getElementById('canvas-container');
+    const css2dContainer = document.getElementById('css2d-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x02060a);
+    scene.fog = new THREE.FogExp2(0x02060a, 0.012);
+
+    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(12, 8, 16);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+    container.appendChild(renderer.domElement);
+
+    const cssRenderer = new CSS2DRenderer({ element: css2dContainer });
+    cssRenderer.setSize(window.innerWidth, window.innerHeight);
+
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.45, 0.25, 0.85);
+    composer.addPass(bloomPass);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; controls.dampingFactor = 0.06;
+    controls.maxPolarAngle = Math.PI / 2 - 0.02; controls.minDistance = 4; controls.maxDistance = 55;
+
+    const pmremGenerator = new THREE.PMREMGenerator(renderer); pmremGenerator.compileEquirectangularShader();
+    new RGBELoader().load('https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/autoshop_01_1k.hdr', (texture) => {
+      scene.environment = pmremGenerator.fromEquirectangular(texture).texture; texture.dispose();
+    }, undefined, () => { scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture; });
+
+    // Lights
+    const ambient = new THREE.AmbientLight(0xffffff, 0.15); scene.add(ambient);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2.0); dirLight.position.set(10, 20, 10); dirLight.castShadow = true; dirLight.shadow.mapSize.set(2048,2048); dirLight.shadow.bias = -0.0005; scene.add(dirLight);
+    const fillLight = new THREE.DirectionalLight(0x00d9a5, 0.45); fillLight.position.set(-12, 6, -10); scene.add(fillLight);
+    const spot = new THREE.SpotLight(0x00aaff, 1.5); spot.position.set(0, 18, -18); spot.lookAt(0,0,0); spot.angle = Math.PI / 6; spot.penumbra = 0.5; scene.add(spot);
 
     // Floor
-    const floorPlate = new THREE.Mesh(new THREE.BoxGeometry(shellW, 0.08, shellD), shellMat.clone()); floorPlate.position.y = -halfH; floorPlate.receiveShadow = true; shellGroup.add(floorPlate);
-    // Corrugated sides
-    shellGroup.add(corrugatedWall(shellH, shellH, 0.08, false, 14)); // left placeholder pos
-    const leftWall = corrugatedWall(shellH, shellH, 0.08, false, 14); leftWall.position.set(-halfW, 0, 0); shellGroup.add(leftWall);
-    const rightWall = corrugatedWall(shellH, shellH, 0.08, false, 14); rightWall.position.set(halfW, 0, 0); shellGroup.add(rightWall);
-    const backWall = corrugatedWall(shellW, shellH, 0.08, true, 30); backWall.position.set(0, 0, -halfD); shellGroup.add(backWall);
-    const frontWall = corrugatedWall(shellW, shellH, 0.08, true, 30); frontWall.position.set(0, 0, halfD); shellGroup.add(frontWall);
-    const topWall = corrugatedWall(shellW, shellD, 0.08, true, 30); topWall.rotation.x = Math.PI/2; topWall.position.set(0, halfH, 0); shellGroup.add(topWall);
+    const floorMesh = new THREE.Mesh(new THREE.PlaneGeometry(80,80), floorMat);
+    floorMesh.rotation.x = -Math.PI / 2; floorMesh.position.y = -0.05; floorMesh.receiveShadow = true; scene.add(floorMesh);
+    const grid = new THREE.GridHelper(80,80, 0x112233, 0x0a151f); grid.position.y = -0.04; scene.add(grid);
 
-    // Corner castings
-    const cornerGeo = new THREE.BoxGeometry(0.35,0.35,0.35);
-    [[-halfW,halfD], [halfW,halfD], [-halfW,-halfD], [halfW,-halfD]].forEach(([x,z]) => {
-      [-halfH, halfH].forEach(y => { const c = new THREE.Mesh(cornerGeo, darkMetalMat); c.position.set(x,y,z); c.castShadow = true; shellGroup.add(c); });
-    });
+    // ===== Product builders =====
+    const products = {}; // key -> { group, parts, particles, labels, originalPos, animatables }
+    let currentKey = 'stacked';
 
-    // Door frame
-    const doorGroup = new THREE.Group(); doorGroup.position.set(0,0,halfD);
-    const dL = new THREE.Mesh(new THREE.BoxGeometry(0.1, shellH-0.2, 0.14), shellMat.clone()); dL.position.set(-2.1,0,0); doorGroup.add(dL);
-    const dR = new THREE.Mesh(new THREE.BoxGeometry(0.1, shellH-0.2, 0.14), shellMat.clone()); dR.position.set(2.1,0,0); doorGroup.add(dR);
-    const dT = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.1, 0.14), shellMat.clone()); dT.position.set(0, halfH-0.05,0); doorGroup.add(dT);
-    const dB = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.1, 0.14), shellMat.clone()); dB.position.set(0, -halfH+0.05,0); doorGroup.add(dB);
-    shellGroup.add(doorGroup);
+    // ---------- Stacked All-in-One ----------
+    function buildStacked() {
+      const g = new THREE.Group();
+      const parts = [];
 
-    shellGroup.userData = { part: 'shell', name: '储能集装箱壳体', tag: 'SHELL', desc: '20尺标准集装箱结构，波纹侧板设计，表面喷涂防腐涂层。', specs: ['20尺', 'IP55', 'C5防腐', 'ISO668'] };
-    containerGroup.add(shellGroup);
+      // Enclosure
+      const shellW = 1.0, shellH = 2.2, shellD = 0.85;
+      const shell = new THREE.Group();
+      const boxMat = shellMat.clone();
+      const back = new THREE.Mesh(new THREE.BoxGeometry(shellW, shellH, 0.04), boxMat); back.position.set(0, shellH/2, -shellD/2); back.castShadow = true; shell.add(back);
+      const left = new THREE.Mesh(new THREE.BoxGeometry(0.04, shellH, shellD), boxMat); left.position.set(-shellW/2, shellH/2, 0); left.castShadow = true; shell.add(left);
+      const right = new THREE.Mesh(new THREE.BoxGeometry(0.04, shellH, shellD), boxMat); right.position.set(shellW/2, shellH/2, 0); right.castShadow = true; shell.add(right);
+      const top = new THREE.Mesh(new THREE.BoxGeometry(shellW, 0.04, shellD), boxMat); top.position.set(0, shellH, 0); top.castShadow = true; shell.add(top);
+      const bottom = new THREE.Mesh(new THREE.BoxGeometry(shellW, 0.04, shellD), boxMat); bottom.position.set(0, 0, 0); bottom.castShadow = true; shell.add(bottom);
+      const door = new THREE.Mesh(new THREE.BoxGeometry(0.04, shellH-0.08, shellD-0.04), boxMat); door.position.set(0, shellH/2, shellD/2); door.castShadow = true; shell.add(door);
+      shell.userData = { part: 'shell', name: '堆叠一体机壳体', tag: 'SHELL', desc: '立式一体化储能柜，采用冷轧钢板+喷涂工艺，防护等级 IP55。', specs: ['215 kWh', 'IP55', '户外型', '立式'] };
+      g.add(shell); parts.push(shell);
 
-    // Inner floor pad
-    const floorPad = new THREE.Mesh(new THREE.BoxGeometry(shellW-0.2, 0.08, shellD-0.2), new THREE.MeshPhysicalMaterial({color:0x040a10, roughness:0.15, metalness:0.5, clearcoat:0.3}));
-    floorPad.position.y = -halfH + 0.12; floorPad.receiveShadow = true; containerGroup.add(floorPad);
+      // Battery stacks (5 layers)
+      const stacks = [];
+      for (let i=0;i<5;i++) {
+        const stack = new THREE.Group(); stack.position.set(0, 0.25 + i*0.38, 0);
+        const mod = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.32, 0.72), cellMat.clone()); mod.castShadow = true; stack.add(mod);
+        const led = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.01, 0.01), cellEmissiveMat.clone());
+        led.position.set(0.42, 0.1, 0.30); led.userData = { isLed: true, baseIntensity: 0.5, phase: i*0.5 }; stack.add(led);
+        stack.userData = { part: 'stack' + i, name: '电池模组 L' + (i+1), tag: 'MODULE', desc: '磷酸铁锂堆叠模组，单模组 43kWh，支持即插即用。', specs: ['43 kWh', '768 Vdc', '≥8000 次', 'IP55'] };
+        g.add(stack); stacks.push(stack); parts.push(stack);
+      }
 
-    // --- Battery Racks ---
-    const racks = [];
-    function createBatteryRack(x, label) {
-      const rackGroup = new THREE.Group(); rackGroup.position.set(x, -halfH + 0.85, 0);
-      const fw = 0.66, fh = 2.05, fd = 2.25;
-      // pillars
-      const pillarGeo = new THREE.BoxGeometry(0.04, fh, 0.04);
-      [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz]) => { const p = new THREE.Mesh(pillarGeo, batteryFrameMat); p.position.set(sx*fw/2, 0, sz*fd/2); p.castShadow = true; rackGroup.add(p); });
-      // shelves
-      for (let s=0;s<7;s++) { const shelf = new THREE.Mesh(new THREE.BoxGeometry(fw+0.02, 0.02, fd+0.02), batteryFrameMat); shelf.position.set(0, -fh/2 + s*(fh/6.2), 0); shelf.castShadow = true; rackGroup.add(shelf); }
-      // modules
-      const rows=6, cols=3; const mw=0.54, mh=0.25, md=0.64; const modGeo = new THREE.BoxGeometry(mw, mh, md);
-      for (let r=0;r<rows;r++) {
-        for (let c=0;c<cols;c++) {
-          const mod = new THREE.Mesh(modGeo, cellMat.clone());
-          mod.position.set(0, -fh/2 + 0.14 + r*(mh+0.04) + mh/2, -fd/2 + 0.12 + c*(md+0.06) + md/2);
-          mod.castShadow = true; rackGroup.add(mod);
-          const led = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.015, 0.015), cellEmissiveMat.clone());
-          led.position.set(mw/2+0.008, mod.position.y, mod.position.z + md/2 - 0.05);
-          led.userData = { isLed: true, baseIntensity: 0.4 + Math.random()*0.2, phase: Math.random()*Math.PI*2 };
-          rackGroup.add(led);
+      // PCS/BMS top unit
+      const topUnit = new THREE.Group(); topUnit.position.set(0, shellH - 0.22, 0);
+      const pcs = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.18, 0.78), pcsMat); pcs.castShadow = true; topUnit.add(pcs);
+      const bms = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.18, 0.78), bmsMat); bms.position.set(0, -0.20, 0); bms.castShadow = true; topUnit.add(bms);
+      topUnit.userData = { part: 'pcs', name: '顶部 PCS + BMS', tag: 'CONTROL', desc: '顶部集成双向变流器与电池管理系统，最大功率 100kW。', specs: ['100 kW', '≥98.6%', 'IP54', '≤30ms'] };
+      g.add(topUnit); parts.push(topUnit);
+
+      // HVAC bottom
+      const hvac = new THREE.Group(); hvac.position.set(0, 0.12, 0);
+      const hvacBody = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.20, 0.78), hvacMat); hvacBody.castShadow = true; hvac.add(hvacBody);
+      const fan = new THREE.Group(); fan.position.set(0, 0.11, 0.20);
+      for (let i=0;i<4;i++) { const b = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.04, 0.01), darkMetalMat); b.rotation.z = i*Math.PI/2; fan.add(b); }
+      hvac.add(fan); hvac.userData = { part: 'hvac', name: '底部空调系统', tag: 'HVAC', desc: '底部风冷散热，确保电芯温差 ≤3℃。', specs: ['ΔT≤3℃', '5kW', 'IP55', '-20~45℃'] };
+      g.add(hvac); parts.push(hvac);
+
+      // Labels
+      const labels = new THREE.Group(); g.add(labels);
+      addLabel(labels, 'PCS 100kW', 0, shellH - 0.12, 0.45);
+      addLabel(labels, 'HVAC', 0, 0.25, 0.45);
+
+      return { group: g, parts, animatables: { fan }, labels };
+    }
+
+    // ---------- Cabinet All-in-One ----------
+    function buildCabinet() {
+      const g = new THREE.Group();
+      const parts = [];
+
+      const cw = 1.6, ch = 2.0, cd = 1.0;
+      // Shell
+      const shell = new THREE.Group();
+      const boxMat = shellMat.clone();
+      const cBack = new THREE.Mesh(new THREE.BoxGeometry(cw, ch, 0.04), boxMat); cBack.position.set(0, ch/2, -cd/2); cBack.castShadow = true; shell.add(cBack);
+      const cLeft = new THREE.Mesh(new THREE.BoxGeometry(0.04, ch, cd), boxMat); cLeft.position.set(-cw/2, ch/2, 0); cLeft.castShadow = true; shell.add(cLeft);
+      const cRight = new THREE.Mesh(new THREE.BoxGeometry(0.04, ch, cd), boxMat); cRight.position.set(cw/2, ch/2, 0); cRight.castShadow = true; shell.add(cRight);
+      const cTop = new THREE.Mesh(new THREE.BoxGeometry(cw, 0.04, cd), boxMat); cTop.position.set(0, ch, 0); cTop.castShadow = true; shell.add(cTop);
+      const cBot = new THREE.Mesh(new THREE.BoxGeometry(cw, 0.04, cd), boxMat); cBot.position.set(0, 0, 0); cBot.castShadow = true; shell.add(cBot);
+      const cDoor = new THREE.Mesh(new THREE.BoxGeometry(0.04, ch-0.06, cd-0.04), boxMat); cDoor.position.set(0, ch/2, cd/2); cDoor.castShadow = true; shell.add(cDoor);
+      shell.userData = { part: 'shell', name: '户外柜壳体', tag: 'SHELL', desc: '户外空调式储能柜，防雨防尘，适配园区/工厂侧部署。', specs: ['100 kWh', 'IP55', '户外型', '卧式'] };
+      g.add(shell); parts.push(shell);
+
+      // Battery racks (2 columns)
+      const racks = [];
+      for (let i=0;i<2;i++) {
+        const rack = new THREE.Group(); rack.position.set(-0.35 + i*0.70, 0.15, 0);
+        for (let r=0;r<4;r++) {
+          const mod = new THREE.Mesh(new THREE.BoxGeometry(0.60, 0.38, 0.82), cellMat.clone()); mod.position.set(0, 0.10 + r*0.42, 0); mod.castShadow = true; rack.add(mod);
+          const led = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.01, 0.01), cellEmissiveMat.clone()); led.position.set(0.31, 0.20 + r*0.42, 0.38); led.userData = { isLed: true, baseIntensity: 0.45, phase: (i*4+r)*0.3 }; rack.add(led);
         }
+        rack.userData = { part: 'rack' + i, name: '电池架 ' + (i+1), tag: 'RACK', desc: '磷酸铁锂电池架，单架 50kWh，4层模组设计。', specs: ['50 kWh', '768 Vdc', '≥8000 次', 'IP55'] };
+        g.add(rack); racks.push(rack); parts.push(rack);
       }
-      // Front panel
-      const panel = new THREE.Mesh(new THREE.BoxGeometry(fw+0.02, fh, 0.02), darkMetalMat);
-      panel.position.set(0,0,fd/2+0.01); rackGroup.add(panel);
-      // Panel display canvas
-      const panelLabel = new THREE.Mesh(new THREE.PlaneGeometry(0.4, 0.2), new THREE.MeshBasicMaterial({ map: makePanelCanvas(label), transparent: true }));
-      panelLabel.position.set(0, 0.6, fd/2+0.025); rackGroup.add(panelLabel);
-      for (let i=0;i<12;i++) {
-        const stripLed = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.035, 0.01), cellEmissiveMat.clone());
-        stripLed.position.set(-fw/3 + (i%6)*0.11, 0.45 - Math.floor(i/6)*0.35, fd/2+0.025);
-        stripLed.userData = { isLed: true, baseIntensity: 0.45, phase: i*0.25 };
-        rackGroup.add(stripLed);
+
+      // PCS/BMS on right side behind racks (visible when exploded)
+      const pcs = new THREE.Group(); pcs.position.set(0.55, 0.6, 0);
+      const pcsBody = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.9, 0.85), pcsMat); pcsBody.castShadow = true; pcs.add(pcsBody);
+      pcs.userData = { part: 'pcs', name: 'PCS 变流器', tag: 'PCS', desc: '户外柜内置 PCS，最大功率 100kW，转换效率 ≥98.6%。', specs: ['100 kW', '≥98.6%', 'IP54', '≤30ms'] };
+      g.add(pcs); parts.push(pcs);
+
+      const bms = new THREE.Group(); bms.position.set(0.55, 1.35, 0);
+      const bmsBody = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.4, 0.85), bmsMat); bmsBody.castShadow = true; bms.add(bmsBody);
+      bms.userData = { part: 'bms', name: 'BMS 控制器', tag: 'BMS', desc: '三级 BMS 架构，实时监控电芯级电压、温度与 SOC。', specs: ['3级架构', '±2mV', '≤50ms', 'SOX≥3%'] };
+      g.add(bms); parts.push(bms);
+
+      // HVAC side unit
+      const hvac = new THREE.Group(); hvac.position.set(-0.55, 0.5, 0);
+      const hvacBody = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.8, 0.85), hvacMat); hvacBody.castShadow = true; hvac.add(hvacBody);
+      const fan = new THREE.Group(); fan.position.set(-0.18, 0, 0.44);
+      for (let i=0;i<4;i++) { const b = new THREE.Mesh(new THREE.BoxGeometry(0.20, 0.03, 0.01), darkMetalMat); b.rotation.z = i*Math.PI/2; fan.add(b); }
+      hvac.add(fan); hvac.userData = { part: 'hvac', name: '侧置空调系统', tag: 'HVAC', desc: '侧置风冷模块，维持电芯温差 ≤3℃。', specs: ['ΔT≤3℃', '8kW', 'IP55', '-20~45℃'] };
+      g.add(hvac); parts.push(hvac);
+
+      // Fire suppression top
+      const fire = new THREE.Group(); fire.position.set(0, ch - 0.08, 0);
+      const pipe = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 1.2, 8), pipeMat); pipe.rotation.z = Math.PI/2; fire.add(pipe);
+      [-0.4, 0, 0.4].forEach(x => { const n = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.12, 8), pipeMat); n.position.set(x, -0.06, 0); n.rotation.x = Math.PI/3; fire.add(n); });
+      fire.userData = { part: 'fire', name: '顶部消防系统', tag: 'FIRE', desc: '柜级消防探测与全氟己酮灭火，响应时间 ≤3s。', specs: ['柜级', '≤3s', '全氟己酮', 'IP55'] };
+      g.add(fire); parts.push(fire);
+
+      // Labels
+      const labels = new THREE.Group(); g.add(labels);
+      addLabel(labels, 'PCS 100kW', 0.55, 1.1, 0.45);
+      addLabel(labels, 'HVAC', -0.55, 0.95, 0.45);
+
+      return { group: g, parts, animatables: { fan }, labels };
+    }
+
+    // ---------- Container Large Storage ----------
+    function buildContainer() {
+      const g = new THREE.Group();
+      const parts = [];
+      const shellW = 13.6, shellH = 3.0, shellD = 3.0;
+      const halfW = shellW/2, halfH = shellH/2, halfD = shellD/2;
+
+      const shellGroup = new THREE.Group();
+      function corrugatedWall(w, h, depth, vertical, segments) {
+        const gg = new THREE.Group(); const segSize = (vertical ? w : h) / segments;
+        const geo = vertical ? new THREE.BoxGeometry(segSize*0.85, h, depth) : new THREE.BoxGeometry(w, segSize*0.85, depth);
+        for (let i=0;i<segments;i++) { const m = new THREE.Mesh(geo, shellMat.clone()); const offset = (i - (segments-1)/2) * segSize; m.position.set(vertical ? offset : 0, vertical ? 0 : offset, depth>0 ? 0.02 : -0.02); m.castShadow = true; m.receiveShadow = true; gg.add(m); }
+        return gg;
       }
-      // handles
-      const handleGeo = new THREE.CylinderGeometry(0.01,0.01,0.12,8); handleGeo.rotateZ(Math.PI/2);
-      [-0.2,0.2].forEach(hx => { const h = new THREE.Mesh(handleGeo, darkMetalMat); h.position.set(hx, 0, fd/2+0.04); rackGroup.add(h); });
+      const floorPlate = new THREE.Mesh(new THREE.BoxGeometry(shellW, 0.08, shellD), shellMat.clone()); floorPlate.position.y = -halfH; floorPlate.receiveShadow = true; shellGroup.add(floorPlate);
+      const leftWall = corrugatedWall(shellH, shellH, 0.08, false, 14); leftWall.position.set(-halfW, 0, 0); shellGroup.add(leftWall);
+      const rightWall = corrugatedWall(shellH, shellH, 0.08, false, 14); rightWall.position.set(halfW, 0, 0); shellGroup.add(rightWall);
+      const backWall = corrugatedWall(shellW, shellH, 0.08, true, 30); backWall.position.set(0, 0, -halfD); shellGroup.add(backWall);
+      const frontWall = corrugatedWall(shellW, shellH, 0.08, true, 30); frontWall.position.set(0, 0, halfD); shellGroup.add(frontWall);
+      const topWall = corrugatedWall(shellW, shellD, 0.08, true, 30); topWall.rotation.x = Math.PI/2; topWall.position.set(0, halfH, 0); shellGroup.add(topWall);
+      [[-halfW,halfD], [halfW,halfD], [-halfW,-halfD], [halfW,-halfD]].forEach(([x,z]) => { [-halfH, halfH].forEach(y => { const c = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.35,0.35), darkMetalMat); c.position.set(x,y,z); c.castShadow = true; shellGroup.add(c); }); });
+      const doorGroup = new THREE.Group(); doorGroup.position.set(0,0,halfD);
+      const dL = new THREE.Mesh(new THREE.BoxGeometry(0.1, shellH-0.2, 0.14), shellMat.clone()); dL.position.set(-2.1,0,0); doorGroup.add(dL);
+      const dR = new THREE.Mesh(new THREE.BoxGeometry(0.1, shellH-0.2, 0.14), shellMat.clone()); dR.position.set(2.1,0,0); doorGroup.add(dR);
+      const dT = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.1, 0.14), shellMat.clone()); dT.position.set(0, halfH-0.05, 0); doorGroup.add(dT);
+      const dB = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.1, 0.14), shellMat.clone()); dB.position.set(0, -halfH+0.05, 0); doorGroup.add(dB);
+      shellGroup.add(doorGroup);
+      shellGroup.userData = { part: 'shell', name: '储能集装箱壳体', tag: 'SHELL', desc: '20尺标准集装箱结构，波纹侧板设计，表面喷涂防腐涂层。', specs: ['20尺', 'IP55', 'C5防腐', 'ISO668'] };
+      g.add(shellGroup); parts.push(shellGroup);
 
-      rackGroup.userData = { part: 'battery', name: '电池簇 '+label, tag: 'BATTERY', desc: '采用磷酸铁锂电芯，单簇容量 215kWh，支持 1C 充放电，循环寿命超过 8000 次。', specs: ['215 kWh', '768 Vdc', '≥8000 次', 'IP55'] };
-      return rackGroup;
+      const floorPad = new THREE.Mesh(new THREE.BoxGeometry(shellW-0.2, 0.08, shellD-0.2), new THREE.MeshPhysicalMaterial({color:0x040a10, roughness:0.15, metalness:0.5, clearcoat:0.3}));
+      floorPad.position.y = -halfH + 0.12; floorPad.receiveShadow = true; g.add(floorPad);
+
+      const racks = [];
+      function createBatteryRack(x, label) {
+        const rackGroup = new THREE.Group(); rackGroup.position.set(x, -halfH + 0.85, 0);
+        const fw = 0.66, fh = 2.05, fd = 2.25;
+        [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz]) => { const p = new THREE.Mesh(new THREE.BoxGeometry(0.04, fh, 0.04), batteryFrameMat); p.position.set(sx*fw/2, 0, sz*fd/2); p.castShadow = true; rackGroup.add(p); });
+        for (let s=0;s<7;s++) { const shelf = new THREE.Mesh(new THREE.BoxGeometry(fw+0.02, 0.02, fd+0.02), batteryFrameMat); shelf.position.set(0, -fh/2 + s*(fh/6.2), 0); shelf.castShadow = true; rackGroup.add(shelf); }
+        const rows=6, cols=3; const mw=0.54, mh=0.25, md=0.64; const modGeo = new THREE.BoxGeometry(mw, mh, md);
+        for (let r=0;r<rows;r++) { for (let c=0;c<cols;c++) {
+          const mod = new THREE.Mesh(modGeo, cellMat.clone()); mod.position.set(0, -fh/2 + 0.14 + r*(mh+0.04) + mh/2, -fd/2 + 0.12 + c*(md+0.06) + md/2); mod.castShadow = true; rackGroup.add(mod);
+          const led = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.015, 0.015), cellEmissiveMat.clone()); led.position.set(mw/2+0.008, mod.position.y, mod.position.z + md/2 - 0.05); led.userData = { isLed: true, baseIntensity: 0.4 + Math.random()*0.2, phase: Math.random()*Math.PI*2 }; rackGroup.add(led);
+        }}
+        const panel = new THREE.Mesh(new THREE.BoxGeometry(fw+0.02, fh, 0.02), darkMetalMat); panel.position.set(0,0,fd/2+0.01); rackGroup.add(panel);
+        const panelLabel = new THREE.Mesh(new THREE.PlaneGeometry(0.4, 0.2), new THREE.MeshBasicMaterial({ map: makePanelCanvas(label), transparent: true })); panelLabel.position.set(0, 0.6, fd/2+0.025); rackGroup.add(panelLabel);
+        for (let i=0;i<12;i++) { const stripLed = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.035, 0.01), cellEmissiveMat.clone()); stripLed.position.set(-fw/3 + (i%6)*0.11, 0.45 - Math.floor(i/6)*0.35, fd/2+0.025); stripLed.userData = { isLed: true, baseIntensity: 0.45, phase: i*0.25 }; rackGroup.add(stripLed); }
+        [-0.2,0.2].forEach(hx => { const h = new THREE.Mesh(new THREE.CylinderGeometry(0.01,0.01,0.12,8).rotateZ(Math.PI/2), darkMetalMat); h.position.set(hx, 0, fd/2+0.04); rackGroup.add(h); });
+        rackGroup.userData = { part: 'battery', name: '电池簇 '+label, tag: 'BATTERY', desc: '采用磷酸铁锂电芯，单簇容量 215kWh，支持 1C 充放电，循环寿命超过 8000 次。', specs: ['215 kWh', '768 Vdc', '≥8000 次', 'IP55'] };
+        return rackGroup;
+      }
+      for (let i=0;i<4;i++) { const rack = createBatteryRack(-3.6 + i*1.0, String(i+1)); g.add(rack); racks.push(rack); parts.push(rack); }
+
+      const pcsGroup = new THREE.Group(); pcsGroup.position.set(2.0, -halfH + 0.95, 0);
+      const pcsBody = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.8, 2.0), pcsMat); pcsBody.castShadow = true; pcsGroup.add(pcsBody);
+      for (let i=0;i<16;i++) { const fin = new THREE.Mesh(new THREE.BoxGeometry(1.28, 0.02, 0.16), darkMetalMat); fin.position.set(0, -0.75 + i*0.15, 1.0); pcsGroup.add(fin); }
+      const pcsLed = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.03,16), new THREE.MeshStandardMaterial({color:0x00d9a5, emissive:0x00d9a5, emissiveIntensity:0.9})); pcsLed.rotation.x = Math.PI/2; pcsLed.position.set(0.35,0.55,1.01); pcsLed.userData={isLed:true, baseIntensity:0.9, phase:0}; pcsGroup.add(pcsLed);
+      pcsGroup.userData = { part: 'pcs', name: '储能变流器 (PCS)', tag: 'PCS', desc: '双向 AC/DC 变流器，支持并网/离网运行，最大功率 630kW，转换效率 ≥98.6%。', specs: ['630 kW', '≥98.6%', 'IP54', '≤30ms'] };
+      g.add(pcsGroup); parts.push(pcsGroup);
+
+      const bmsGroup = new THREE.Group(); bmsGroup.position.set(3.4, -halfH + 0.8, 0);
+      const bmsBody = new THREE.Mesh(new THREE.BoxGeometry(0.85, 1.6, 1.7), bmsMat); bmsBody.castShadow = true; bmsGroup.add(bmsBody);
+      bmsGroup.userData = { part: 'bms', name: '电池管理系统 (BMS)', tag: 'BMS', desc: '三级 BMS 架构，实现电芯级电压/温度/SOC 实时监控，支持故障预警与主动均衡。', specs: ['3级架构', '±2mV', '≤50ms', 'SOX≥3%'] };
+      g.add(bmsGroup); parts.push(bmsGroup);
+
+      const hvacGroup = new THREE.Group(); hvacGroup.position.set(-5.2, -halfH + 0.95, 0);
+      const hvacBody = new THREE.Mesh(new THREE.BoxGeometry(1.0, 1.8, 1.85), hvacMat); hvacBody.castShadow = true; hvacGroup.add(hvacBody);
+      const fan = new THREE.Group(); fan.position.set(0,0,0.93);
+      for (let i=0;i<5;i++) { const blade = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.06, 0.015), darkMetalMat); blade.rotation.z = i*Math.PI/2.5; fan.add(blade); }
+      hvacGroup.add(fan); hvacGroup.userData = { part: 'hvac', name: '液冷温控系统 (HVAC)', tag: 'HVAC', desc: '智能液冷温控，将电池包温差控制在 3℃ 以内，系统能耗降低 30%。', specs: ['ΔT≤3℃', '30kW', 'IP55', '-30~55℃'] };
+      g.add(hvacGroup); parts.push(hvacGroup);
+
+      const pipeGroup = new THREE.Group();
+      const pipePath = new THREE.CatmullRomCurve3([new THREE.Vector3(-5.8, 1.1, -0.9), new THREE.Vector3(-2.5, 1.2, -0.9), new THREE.Vector3(0, 1.25, -0.9), new THREE.Vector3(2.8, 1.2, -0.9), new THREE.Vector3(4.8, 1.1, -0.9)]);
+      pipeGroup.add(new THREE.Mesh(new THREE.TubeGeometry(pipePath, 40, 0.045, 10, false), pipeMat));
+      [-3.6,-2.6,-1.6,-0.6,0.4,1.4,2.4,3.4].forEach(x => { const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.2,8), pipeMat); nozzle.position.set(x, 1.15 - 0.03, -0.9 + 0.08); nozzle.rotation.x = Math.PI/3.5; pipeGroup.add(nozzle); const branch = new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,0.15,8), pipeMat); branch.position.set(x, 1.18, -0.9); branch.rotation.x = Math.PI/2; pipeGroup.add(branch); });
+      pipeGroup.userData = { part: 'fire', name: '多级消防系统', tag: 'FIRE', desc: 'Pack 级 + 簇级 + 系统级多级消防，采用全氟己酮灭火剂，早期探测响应时间 ≤3s。', specs: ['Pack级', '≤3s', '全氟己酮', 'IP55'] };
+      g.add(pipeGroup); parts.push(pipeGroup);
+
+      const labels = new THREE.Group(); g.add(labels);
+      racks.forEach((rack,i) => addLabel(labels, 'SOC 78%', rack.position.x, rack.position.y+1.2, rack.position.z+1.2));
+      addLabel(labels, 'PCS 420kW', pcsGroup.position.x, pcsGroup.position.y+1.1, pcsGroup.position.z+1.1);
+      addLabel(labels, 'BMS 在线', bmsGroup.position.x, bmsGroup.position.y+1.0, bmsGroup.position.z+0.9);
+      addLabel(labels, 'HVAC 28°C', hvacGroup.position.x, hvacGroup.position.y+1.1, hvacGroup.position.z+1.0);
+
+      return { group: g, parts, animatables: { fan }, labels };
     }
-    for (let i=0;i<4;i++) { const rack = createBatteryRack(-3.6 + i*1.0, String(i+1)); containerGroup.add(rack); racks.push(rack); }
 
-    // --- PCS ---
-    const pcsGroup = new THREE.Group(); pcsGroup.position.set(2.0, -halfH + 0.95, 0);
-    const pcsBody = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.8, 2.0), pcsMat); pcsBody.castShadow = true; pcsGroup.add(pcsBody);
-    for (let i=0;i<16;i++) {
-      const fin = new THREE.Mesh(new THREE.BoxGeometry(1.28, 0.02, 0.16), darkMetalMat);
-      fin.position.set(0, -0.75 + i*0.15, 1.0); pcsGroup.add(fin);
+    // ===== Assemble products =====
+    function createProduct(key, builder) {
+      const data = builder();
+      const group = data.group;
+      group.visible = false;
+      scene.add(group);
+
+      // Store original positions for explosion
+      const originalPos = new Map();
+      data.parts.forEach(p => originalPos.set(p.uuid, p.position.clone()));
+
+      // Particles
+      const particleGroup = new THREE.Group(); scene.add(particleGroup);
+      const coolGeo = new THREE.BufferGeometry();
+      const coolCount = 60; const coolPos = new Float32Array(coolCount*3); const coolVel = [];
+      for (let i=0;i<coolCount;i++) { coolPos[i*3]=0; coolPos[i*3+1]=0; coolPos[i*3+2]=0; coolVel.push({vx:0,vy:0,vz:0,life:0}); }
+      coolGeo.setAttribute('position', new THREE.BufferAttribute(coolPos, 3));
+      const coolMat = new THREE.PointsMaterial({color:0xaaddff, size:0.06, transparent:true, opacity:0.3, blending: THREE.AdditiveBlending});
+      const coolParticles = new THREE.Points(coolGeo, coolMat); particleGroup.add(coolParticles);
+      particleGroup.visible = false;
+
+      products[key] = { group, parts: data.parts, originalPos, particleGroup, coolParticles, coolVel, animatables: data.animatables || {}, labels: data.labels || {} };
     }
-    const pcsLed = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.03,16), new THREE.MeshStandardMaterial({color:0x00d9a5, emissive:0x00d9a5, emissiveIntensity:0.9}));
-    pcsLed.rotation.x = Math.PI/2; pcsLed.position.set(0.35,0.55,1.01); pcsLed.userData={isLed:true, baseIntensity:0.9, phase:0}; pcsGroup.add(pcsLed);
-    pcsGroup.userData = { part: 'pcs', name: '储能变流器 (PCS)', tag: 'PCS', desc: '双向 AC/DC 变流器，支持并网/离网运行，最大功率 630kW，转换效率 ≥98.6%。', specs: ['630 kW', '≥98.6%', 'IP54', '≤30ms'] };
-    containerGroup.add(pcsGroup);
 
-    // --- BMS ---
-    const bmsGroup = new THREE.Group(); bmsGroup.position.set(3.4, -halfH + 0.8, 0);
-    const bmsBody = new THREE.Mesh(new THREE.BoxGeometry(0.85, 1.6, 1.7), bmsMat); bmsBody.castShadow = true; bmsGroup.add(bmsBody);
-    const screenGroup = new THREE.Group(); screenGroup.position.set(0,0.2,0.86);
-    const screenBase = new THREE.Mesh(new THREE.PlaneGeometry(0.65,0.4), new THREE.MeshBasicMaterial({ map: bmsWave.texture }));
-    screenGroup.add(screenBase);
-    for (let i=0;i<6;i++) {
-      const bar = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.04 + Math.random()*0.12, 0.01), cellEmissiveMat.clone());
-      bar.position.set(-0.22 + i*0.09, -0.08 + Math.random()*0.08, 0.01);
-      bar.userData = { isLed: true, baseIntensity: 0.5, phase: i*0.4 };
-      screenGroup.add(bar);
-    }
-    bmsGroup.add(screenGroup);
-    bmsGroup.userData = { part: 'bms', name: '电池管理系统 (BMS)', tag: 'BMS', desc: '三级 BMS 架构，实现电芯级电压/温度/SOC 实时监控，支持故障预警与主动均衡。', specs: ['3级架构', '±2mV', '≤50ms', 'SOX≥3%'] };
-    containerGroup.add(bmsGroup);
+    createProduct('stacked', buildStacked);
+    createProduct('cabinet', buildCabinet);
+    createProduct('container', buildContainer);
 
-    // --- HVAC ---
-    const hvacGroup = new THREE.Group(); hvacGroup.position.set(-5.2, -halfH + 0.95, 0);
-    const hvacBody = new THREE.Mesh(new THREE.BoxGeometry(1.0, 1.8, 1.85), hvacMat); hvacBody.castShadow = true; hvacGroup.add(hvacBody);
-    const fanGroup = new THREE.Group(); fanGroup.position.set(0,0,0.93);
-    for (let i=0;i<5;i++) {
-      const blade = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.06, 0.015), darkMetalMat);
-      blade.rotation.z = i*Math.PI/2.5; fanGroup.add(blade);
-    }
-    hvacGroup.add(fanGroup);
-    hvacGroup.userData = { part: 'hvac', name: '液冷温控系统 (HVAC)', tag: 'HVAC', desc: '智能液冷温控，将电池包温差控制在 3℃ 以内，系统能耗降低 30%。', specs: ['ΔT≤3℃', '30kW', 'IP55', '-30~55℃'] };
-    containerGroup.add(hvacGroup);
-
-    // --- Fire Pipes ---
-    const pipeGroup = new THREE.Group();
-    const pipePath = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-5.8, 1.1, -0.9), new THREE.Vector3(-2.5, 1.2, -0.9), new THREE.Vector3(0, 1.25, -0.9), new THREE.Vector3(2.8, 1.2, -0.9), new THREE.Vector3(4.8, 1.1, -0.9)
-    ]);
-    pipeGroup.add(new THREE.Mesh(new THREE.TubeGeometry(pipePath, 40, 0.045, 10, false), pipeMat));
-    [-3.6,-2.6,-1.6,-0.6,0.4,1.4,2.4,3.4].forEach(x => {
-      const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.2,8), pipeMat); nozzle.position.set(x, 1.15 - 0.03, -0.9 + 0.08); nozzle.rotation.x = Math.PI/3.5; pipeGroup.add(nozzle);
-      const branch = new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,0.15,8), pipeMat); branch.position.set(x, 1.18, -0.9); branch.rotation.x = Math.PI/2; pipeGroup.add(branch);
-    });
-    pipeGroup.userData = { part: 'fire', name: '多级消防系统', tag: 'FIRE', desc: 'Pack 级 + 簇级 + 系统级多级消防，采用全氟己酮灭火剂，早期探测响应时间 ≤3s。', specs: ['Pack级', '≤3s', '全氟己酮', 'IP55'] };
-    containerGroup.add(pipeGroup);
-
-    // --- Cables ---
-    const cableGroup = new THREE.Group(); containerGroup.add(cableGroup);
-    function createCable(start, end, mat, radius=0.03) {
-      const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5).add(new THREE.Vector3(0,0.25,0));
-      return new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([start, mid, end]), 24, radius, 8, false), mat);
-    }
-    racks.forEach(rack => {
-      cableGroup.add(createCable(new THREE.Vector3(rack.position.x, rack.position.y+0.7, rack.position.z+1.15), new THREE.Vector3(pcsGroup.position.x-0.55, pcsGroup.position.y+0.35, pcsGroup.position.z+1.0), cableMat, 0.04));
-      cableGroup.add(createCable(new THREE.Vector3(rack.position.x, rack.position.y+0.35, rack.position.z+1.15), new THREE.Vector3(bmsGroup.position.x-0.35, bmsGroup.position.y+0.15, bmsGroup.position.z+0.85), commCableMat, 0.022));
-    });
-    cableGroup.add(createCable(new THREE.Vector3(hvacGroup.position.x, hvacGroup.position.y+0.15, hvacGroup.position.z+0.9), new THREE.Vector3(-1.2, 1.05, 0), new THREE.MeshStandardMaterial({color:0x88ccff, roughness:0.3, metalness:0.3, transparent:true, opacity:0.7}), 0.055));
-    cableGroup.userData = { part: 'cables', name: '高压与通信线缆', tag: 'CABLES', desc: '高压直流线缆与 CAN/以太网通信线缆，分层敷设，避免电磁干扰。', specs: ['1500Vdc', 'CAN2.0', '阻燃B1', '屏蔽层'] };
-
-    // --- Reflector Floor ---
-    const reflectorGeo = new THREE.CircleGeometry(30, 64);
-    const reflector = new Reflector(reflectorGeo, {
-      clipBias: 0.003, textureWidth: window.innerWidth * Math.min(window.devicePixelRatio, 2),
-      textureHeight: window.innerHeight * Math.min(window.devicePixelRatio, 2), color: 0x8899aa
-    });
-    reflector.rotation.x = -Math.PI / 2; reflector.position.y = -halfH - 0.06;
-    scene.add(reflector);
-    const envFloor = new THREE.Mesh(new THREE.PlaneGeometry(120,120), new THREE.MeshPhysicalMaterial({color:0x02060a, roughness:0.15, metalness:0.45, transparent:true, opacity:0.35}));
-    envFloor.rotation.x = -Math.PI/2; envFloor.position.y = -halfH - 0.055; envFloor.receiveShadow = true; scene.add(envFloor);
-
-    // --- 3D Floating Labels ---
-    const labelGroup = new THREE.Group(); containerGroup.add(labelGroup);
-    function addLabel(text, x, y, z) {
-      const div = document.createElement('div'); div.className = 'label-card'; div.textContent = text;
-      const obj = new CSS2DObject(div); obj.position.set(x,y,z); labelGroup.add(obj); return obj;
-    }
-    racks.forEach((rack,i) => addLabel('SOC 78%', rack.position.x, rack.position.y+1.2, rack.position.z+1.2));
-    addLabel('PCS 420kW', pcsGroup.position.x, pcsGroup.position.y+1.1, pcsGroup.position.z+1.1);
-    addLabel('BMS 在线', bmsGroup.position.x, bmsGroup.position.y+1.0, bmsGroup.position.z+0.9);
-    addLabel('HVAC 28°C', hvacGroup.position.x, hvacGroup.position.y+1.1, hvacGroup.position.z+1.0);
-
-    // --- Particles ---
-    const particleGroup = new THREE.Group(); scene.add(particleGroup);
-    const coolCount = 100; const coolPos = new Float32Array(coolCount*3); const coolVel = [];
-    for (let i=0;i<coolCount;i++) {
-      coolPos[i*3] = hvacGroup.position.x + (Math.random()-0.5)*0.7;
-      coolPos[i*3+1] = hvacGroup.position.y + 0.4;
-      coolPos[i*3+2] = hvacGroup.position.z + 0.9 + Math.random()*0.3;
-      coolVel.push({vx: 0.7 + Math.random()*0.6, vy: (Math.random()-0.5)*0.1, vz: (Math.random()-0.5)*0.25, life: Math.random()});
-    }
-    const coolGeo = new THREE.BufferGeometry(); coolGeo.setAttribute('position', new THREE.BufferAttribute(coolPos, 3));
-    const coolParticles = new THREE.Points(coolGeo, new THREE.PointsMaterial({color:0xaaddff, size:0.07, transparent:true, opacity:0.3, blending: THREE.AdditiveBlending}));
-    particleGroup.add(coolParticles);
-
-    const energyCount = 50; const ePos = new Float32Array(energyCount*3); const eProg = [];
-    for (let i=0;i<energyCount;i++) { ePos[i*3]=0; ePos[i*3+1]=0; ePos[i*3+2]=0; eProg.push({t:Math.random(), rack:Math.floor(Math.random()*racks.length), speed:0.35+Math.random()*0.35}); }
-    const eGeo = new THREE.BufferGeometry(); eGeo.setAttribute('position', new THREE.BufferAttribute(ePos, 3));
-    const energyParticles = new THREE.Points(eGeo, new THREE.PointsMaterial({color:0xffaa33, size:0.09, transparent:true, opacity:0.8, blending: THREE.AdditiveBlending}));
-    particleGroup.add(energyParticles);
-
-    // --- State & Nav ---
+    // ===== State =====
     let autoRotate = true, exploded = false, sectionMode = false, tourMode = false; let tourIndex = 0;
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('explode') === '1') { exploded = true; autoRotate = false; }
-    if (urlParams.get('section') === '1') { sectionMode = true; }
+    const initialProduct = ['stacked','cabinet','container'].includes(urlParams.get('product')) ? urlParams.get('product') : 'stacked';
 
-    const parts = [shellGroup, ...racks, pcsGroup, bmsGroup, hvacGroup, pipeGroup, cableGroup];
-    const originalPositions = new Map(); parts.forEach(obj => originalPositions.set(obj.uuid, obj.position.clone()));
-
-    function applyShellSection() {
-      shellGroup.children.forEach(child => {
-        if (child.isMesh && child.geometry.type === 'BoxGeometry') {
-          const isWall = Math.abs(child.scale.x) < 1.1 && Math.abs(child.scale.y) < 1.1 && (Math.abs(child.position.x) >= halfW-0.1 || Math.abs(child.position.z) >= halfD-0.1 || Math.abs(child.position.y) >= halfH-0.1);
-          child.material = sectionMode ? shellCutawayMat.clone() : shellMat.clone();
-          if (sectionMode && isWall) { child.material.transparent = true; child.material.opacity = 0.10; child.material.side = THREE.DoubleSide; child.material.depthWrite = false; }
-        } else if (child.type === 'Group') {
-          child.children.forEach(c => { if (c.isMesh && c.geometry.type === 'BoxGeometry') { c.material = sectionMode ? shellCutawayMat.clone() : shellMat.clone(); if (sectionMode) { c.material.transparent = true; c.material.opacity = 0.10; c.material.side = THREE.DoubleSide; c.material.depthWrite = false; } } });
-        }
-      });
+    // ===== Switch product =====
+    function switchProduct(key) {
+      if (currentKey === key) return;
+      // hide current
+      products[currentKey].group.visible = false;
+      products[currentKey].particleGroup.visible = false;
+      // reset state
+      autoRotate = true; exploded = false; sectionMode = false; tourMode = false; tourIndex = 0;
+      updateBtnText();
+      document.getElementById('info-panel').classList.add('hidden');
+      // show new
+      currentKey = key;
+      Object.keys(products).forEach(k => { products[k].group.visible = (k===key); products[k].particleGroup.visible = (k===key); });
+      // camera reset per product
+      const camMap = { stacked: {pos:[3,2.5,5], target:[0,1.1,0]}, cabinet: {pos:[4,3,6], target:[0,1.0,0]}, container: {pos:[16,10,20], target:[0,0,0]} };
+      const cfg = camMap[key];
+      gsapTo(camera.position, {x:cfg.pos[0], y:cfg.pos[1], z:cfg.pos[2]}, 0.8);
+      gsapTo(controls.target, {x:cfg.target[0], y:cfg.target[1], z:cfg.target[2]}, 0.8);
+      // update tabs
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.key === key));
+      // rebuild nav
+      buildNav();
+      // reset positions
+      products[key].parts.forEach(p => { const orig = products[key].originalPos.get(p.uuid); p.position.copy(orig); });
+      applySectionMode();
     }
-    if (exploded) {
-      racks.forEach((rack, i) => { const dir = (i < 2) ? -1 : 1; const offset = (i % 2 === 0) ? 1.9 : 0.85; rack.position.set(originalPositions.get(rack.uuid).x + dir * offset, originalPositions.get(rack.uuid).y + 0.45, originalPositions.get(rack.uuid).z + 0.45); });
-      pcsGroup.position.set(originalPositions.get(pcsGroup.uuid).x + 2.0, originalPositions.get(pcsGroup.uuid).y, originalPositions.get(pcsGroup.uuid).z + 0.9);
-      bmsGroup.position.set(originalPositions.get(bmsGroup.uuid).x + 2.9, originalPositions.get(bmsGroup.uuid).y, originalPositions.get(bmsGroup.uuid).z + 0.8);
-      hvacGroup.position.set(originalPositions.get(hvacGroup.uuid).x - 2.0, originalPositions.get(hvacGroup.uuid).y, originalPositions.get(hvacGroup.uuid).z + 0.8);
-      pipeGroup.position.set(originalPositions.get(pipeGroup.uuid).x, originalPositions.get(pipeGroup.uuid).y + 0.9, originalPositions.get(pipeGroup.uuid).z - 0.4);
-      cableGroup.position.set(originalPositions.get(cableGroup.uuid).x, originalPositions.get(cableGroup.uuid).y + 0.25, originalPositions.get(cableGroup.uuid).z);
-    }
-    applyShellSection();
 
-    // --- Raycaster ---
+    // ===== Interactions =====
     const raycaster = new THREE.Raycaster(); const mouse = new THREE.Vector2(); let hoveredObj = null;
     function findPartGroup(mesh) { let curr = mesh; while (curr) { if (curr.userData && curr.userData.part) return curr; curr = curr.parent; } return null; }
     function setEmissive(obj, value) { obj.traverse(child => { if (child.isMesh && child.material && child.material.emissive && !child.userData.isLed) { child.userData._origEmissive = child.userData._origEmissive || child.material.emissive.getHex(); child.material.emissive.setHex(value ? 0x00d9a5 : child.userData._origEmissive); child.material.emissiveIntensity = value ? 0.45 : 0; } }); }
     function onPointerMove(e) {
       mouse.x = (e.clientX / window.innerWidth) * 2 - 1; mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObjects(containerGroup.children, true);
+      const intersects = raycaster.intersectObjects(products[currentKey].group.children, true);
       if (intersects.length > 0) {
         const group = findPartGroup(intersects[0].object);
         if (group && group !== hoveredObj) { if (hoveredObj) setEmissive(hoveredObj, false); hoveredObj = group; setEmissive(hoveredObj, true); document.body.style.cursor = 'pointer'; showTooltip(group.userData.name || '部件', e.clientX, e.clientY); }
       } else { if (hoveredObj) { setEmissive(hoveredObj, false); hoveredObj = null; document.body.style.cursor = 'default'; hideTooltip(); } }
     }
-    function onClick(e) { mouse.x = (e.clientX / window.innerWidth) * 2 - 1; mouse.y = -(e.clientY / window.innerHeight) * 2 + 1; raycaster.setFromCamera(mouse, camera); const intersects = raycaster.intersectObjects(containerGroup.children, true); if (intersects.length > 0) { const group = findPartGroup(intersects[0].object); if (group) focusPart(group); } }
+    function onClick(e) { mouse.x = (e.clientX / window.innerWidth) * 2 - 1; mouse.y = -(e.clientY / window.innerHeight) * 2 + 1; raycaster.setFromCamera(mouse, camera); const intersects = raycaster.intersectObjects(products[currentKey].group.children, true); if (intersects.length > 0) { const group = findPartGroup(intersects[0].object); if (group) focusPart(group); } }
     window.addEventListener('mousemove', onPointerMove); window.addEventListener('click', onClick);
 
     const tooltip = document.getElementById('tooltip');
@@ -563,46 +550,95 @@
     function showInfo(group) { const data = group.userData; if (!data || !data.part) return; document.getElementById('info-tag').textContent = data.tag || 'COMPONENT'; document.getElementById('info-title').textContent = data.name || '部件'; document.getElementById('info-desc').textContent = data.desc || ''; [1,2,3,4].forEach(i => document.getElementById('info-spec'+i).textContent = (data.specs && data.specs[i-1]) || '-'); const panel = document.getElementById('info-panel'); panel.classList.remove('hidden'); panel.classList.add('info-enter'); highlightNav(group.userData.part); }
     document.getElementById('btn-close-info').addEventListener('click', () => { document.getElementById('info-panel').classList.add('hidden'); });
 
-    function focusPart(group) { autoRotate = false; tourMode = false; updateBtnText(); const box = new THREE.Box3().setFromObject(group); const center = box.getCenter(new THREE.Vector3()); const size = box.getSize(new THREE.Vector3()); const maxDim = Math.max(size.x, size.y, size.z); const dist = Math.max(maxDim * 2.0, 5.5); const offset = camera.position.clone().sub(controls.target).normalize().multiplyScalar(dist); const endPos = center.clone().add(offset); gsapTo(camera.position, {x:endPos.x, y:endPos.y, z:endPos.z}, 0.9); gsapTo(controls.target, {x:center.x, y:center.y, z:center.z}, 0.9); showInfo(group); }
+    function focusPart(group) { autoRotate = false; tourMode = false; updateBtnText(); const box = new THREE.Box3().setFromObject(group); const center = box.getCenter(new THREE.Vector3()); const size = box.getSize(new THREE.Vector3()); const maxDim = Math.max(size.x, size.y, size.z); const dist = Math.max(maxDim * 1.8, 3.5); const offset = camera.position.clone().sub(controls.target).normalize().multiplyScalar(dist); const endPos = center.clone().add(offset); gsapTo(camera.position, {x:endPos.x, y:endPos.y, z:endPos.z}, 0.9); gsapTo(controls.target, {x:center.x, y:center.y, z:center.z}, 0.9); showInfo(group); }
 
-    // Nav tree
+    // Navigation
     const navContainer = document.getElementById('part-nav'); const navMap = new Map();
-    const navItems = [{part:'shell',label:'集装箱壳体'},{part:'battery',label:'电池簇 ×4'},{part:'pcs',label:'储能变流器 (PCS)'},{part:'bms',label:'电池管理系统 (BMS)'},{part:'hvac',label:'液冷温控系统 (HVAC)'},{part:'fire',label:'多级消防系统'},{part:'cables',label:'高压与通信线缆'}];
-    navItems.forEach((item, idx) => { const el = document.createElement('div'); el.className = 'nav-item px-3 py-2 rounded cursor-pointer text-sm text-slate-300 flex items-center justify-between'; el.innerHTML = `<span>${item.label}</span><span class="text-xs text-slate-500">${idx+1}</span>`; el.addEventListener('click', () => { const target = parts.find(p => p.userData.part === item.part); if (target) focusPart(target); }); navContainer.appendChild(el); navMap.set(item.part, el); });
+    function buildNav() {
+      navContainer.innerHTML = ''; navMap.clear();
+      const parts = products[currentKey].parts;
+      // deduplicate by part key
+      const seen = new Set();
+      parts.forEach((p, idx) => {
+        const key = p.userData.part;
+        if (!key || seen.has(key)) return;
+        seen.add(key);
+        const el = document.createElement('div');
+        el.className = 'nav-item px-3 py-2 rounded cursor-pointer text-sm text-slate-300 flex items-center justify-between';
+        el.innerHTML = `<span>${p.userData.name}</span><span class="text-xs text-slate-500">${idx+1}</span>`;
+        el.addEventListener('click', () => focusPart(p));
+        navContainer.appendChild(el); navMap.set(key, el);
+      });
+    }
     function highlightNav(part) { navMap.forEach((el, key) => el.classList.toggle('active', key === part)); }
 
     // Buttons
     function updateBtnText() { document.getElementById('btn-rotate').textContent = autoRotate ? '停止旋转' : '自动旋转'; document.getElementById('btn-explode').textContent = exploded ? '合拢视图' : '爆炸图'; document.getElementById('btn-section').textContent = sectionMode ? '关闭剖面' : '剖面视图'; document.getElementById('btn-tour').innerHTML = tourMode ? '<span class="w-2 h-2 rounded-full bg-black/60 pulse-dot"></span> 停止导览' : '<span class="w-2 h-2 rounded-full bg-black/60 pulse-dot"></span> 开启自动导览'; }
-    updateBtnText();
-
     document.getElementById('btn-rotate').addEventListener('click', () => { autoRotate = !autoRotate; if (tourMode) tourMode = false; updateBtnText(); });
-    document.getElementById('btn-explode').addEventListener('click', () => {
-      exploded = !exploded; updateBtnText();
-      if (exploded) {
-        racks.forEach((rack, i) => { const dir = (i < 2) ? -1 : 1; const offset = (i % 2 === 0) ? 1.9 : 0.85; gsapTo(rack.position, { x: originalPositions.get(rack.uuid).x + dir * offset, y: originalPositions.get(rack.uuid).y + 0.45, z: originalPositions.get(rack.uuid).z + 0.45 }, 0.8); });
-        gsapTo(pcsGroup.position, { x: originalPositions.get(pcsGroup.uuid).x + 2.0, y: originalPositions.get(pcsGroup.uuid).y, z: originalPositions.get(pcsGroup.uuid).z + 0.9 }, 0.8);
-        gsapTo(bmsGroup.position, { x: originalPositions.get(bmsGroup.uuid).x + 2.9, y: originalPositions.get(bmsGroup.uuid).y, z: originalPositions.get(bmsGroup.uuid).z + 0.8 }, 0.8);
-        gsapTo(hvacGroup.position, { x: originalPositions.get(hvacGroup.uuid).x - 2.0, y: originalPositions.get(hvacGroup.uuid).y, z: originalPositions.get(hvacGroup.uuid).z + 0.8 }, 0.8);
-        gsapTo(pipeGroup.position, { x: originalPositions.get(pipeGroup.uuid).x, y: originalPositions.get(pipeGroup.uuid).y + 0.9, z: originalPositions.get(pipeGroup.uuid).z - 0.4 }, 0.8);
-        gsapTo(cableGroup.position, { x: originalPositions.get(cableGroup.uuid).x, y: originalPositions.get(cableGroup.uuid).y + 0.25, z: originalPositions.get(cableGroup.uuid).z }, 0.8);
-      } else { parts.forEach(obj => gsapTo(obj.position, { x: originalPositions.get(obj.uuid).x, y: originalPositions.get(obj.uuid).y, z: originalPositions.get(obj.uuid).z }, 0.8)); }
-    });
-    document.getElementById('btn-section').addEventListener('click', () => { sectionMode = !sectionMode; updateBtnText(); applyShellSection(); });
+    document.getElementById('btn-explode').addEventListener('click', toggleExplode);
+    document.getElementById('btn-section').addEventListener('click', () => { sectionMode = !sectionMode; updateBtnText(); applySectionMode(); });
     document.getElementById('btn-reset').addEventListener('click', resetView);
-    document.getElementById('btn-tour').addEventListener('click', () => { tourMode = !tourMode; if (tourMode) { autoRotate = false; exploded = false; updateBtnText(); parts.forEach(obj => gsapTo(obj.position, { x: originalPositions.get(obj.uuid).x, y: originalPositions.get(obj.uuid).y, z: originalPositions.get(obj.uuid).z }, 0.6)); applyShellSection(); tourIndex = 0; tourNext(); } else { updateBtnText(); } });
+    document.getElementById('btn-tour').addEventListener('click', () => { tourMode = !tourMode; if (tourMode) { autoRotate = false; exploded = false; updateBtnText(); resetPositions(); applySectionMode(); tourIndex = 0; tourNext(); } else { updateBtnText(); } });
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => switchProduct(btn.dataset.key)));
 
-    function resetView() { autoRotate = false; exploded = false; sectionMode = false; tourMode = false; applyShellSection(); updateBtnText(); parts.forEach(obj => gsapTo(obj.position, { x: originalPositions.get(obj.uuid).x, y: originalPositions.get(obj.uuid).y, z: originalPositions.get(obj.uuid).z }, 0.6)); gsapTo(camera.position, { x: 16, y: 10, z: 20 }, 0.8); gsapTo(controls.target, { x: 0, y: 0, z: 0 }, 0.8); document.getElementById('info-panel').classList.add('hidden'); highlightNav(null); }
+    function resetPositions() { products[currentKey].parts.forEach(p => { const orig = products[currentKey].originalPos.get(p.uuid); p.position.copy(orig); }); }
+    function applySectionMode() {
+      const prod = products[currentKey];
+      prod.parts.forEach(p => {
+        if (p.userData.part === 'shell') {
+          p.traverse(child => {
+            if (child.isMesh && child.geometry.type === 'BoxGeometry') {
+              child.material = sectionMode ? shellCutawayMat.clone() : shellMat.clone();
+              if (sectionMode) { child.material.transparent = true; child.material.opacity = 0.10; child.material.side = THREE.DoubleSide; child.material.depthWrite = false; }
+            }
+          });
+        }
+      });
+    }
+
+    function toggleExplode() {
+      exploded = !exploded; updateBtnText();
+      const prod = products[currentKey];
+      if (currentKey === 'stacked') {
+        if (exploded) {
+          prod.parts.filter(p => p.userData.part && p.userData.part.startsWith('stack')).forEach((p, i) => { gsapTo(p.position, { x: p.position.x, y: p.position.y + 0.15 + i*0.25, z: p.position.z + 0.2 }, 0.8); });
+          const topUnit = prod.parts.find(p => p.userData.part === 'pcs'); if (topUnit) gsapTo(topUnit.position, { x: topUnit.position.x, y: topUnit.position.y + 0.6, z: topUnit.position.z + 0.2 }, 0.8);
+          const hvac = prod.parts.find(p => p.userData.part === 'hvac'); if (hvac) gsapTo(hvac.position, { x: hvac.position.x, y: hvac.position.y - 0.3, z: hvac.position.z + 0.2 }, 0.8);
+          const shell = prod.parts.find(p => p.userData.part === 'shell'); if (shell) gsapTo(shell.position, { x: shell.position.x, y: shell.position.y, z: shell.position.z - 0.6 }, 0.8);
+        } else { resetPositions(); }
+      } else if (currentKey === 'cabinet') {
+        if (exploded) {
+          const racks = prod.parts.filter(p => p.userData.part && p.userData.part.startsWith('rack'));
+          racks.forEach((p, i) => { gsapTo(p.position, { x: p.position.x + (i===0 ? -0.6 : 0.6), y: p.position.y, z: p.position.z + 0.3 }, 0.8); });
+          const pcs = prod.parts.find(p => p.userData.part === 'pcs'); if (pcs) gsapTo(pcs.position, { x: pcs.position.x + 0.4, y: pcs.position.y, z: pcs.position.z + 0.3 }, 0.8);
+          const bms = prod.parts.find(p => p.userData.part === 'bms'); if (bms) gsapTo(bms.position, { x: bms.position.x + 0.4, y: bms.position.y, z: bms.position.z + 0.3 }, 0.8);
+          const hvac = prod.parts.find(p => p.userData.part === 'hvac'); if (hvac) gsapTo(hvac.position, { x: hvac.position.x - 0.4, y: hvac.position.y, z: hvac.position.z + 0.3 }, 0.8);
+          const fire = prod.parts.find(p => p.userData.part === 'fire'); if (fire) gsapTo(fire.position, { x: fire.position.x, y: fire.position.y + 0.3, z: fire.position.z + 0.2 }, 0.8);
+          const shell = prod.parts.find(p => p.userData.part === 'shell'); if (shell) gsapTo(shell.position, { x: shell.position.x, y: shell.position.y, z: shell.position.z - 0.6 }, 0.8);
+        } else { resetPositions(); }
+      } else if (currentKey === 'container') {
+        if (exploded) {
+          const racks = prod.parts.filter(p => p.userData.part === 'battery');
+          racks.forEach((p, i) => { const dir = (i < 2) ? -1 : 1; const offset = (i % 2 === 0) ? 1.9 : 0.85; gsapTo(p.position, { x: prod.originalPos.get(p.uuid).x + dir * offset, y: prod.originalPos.get(p.uuid).y + 0.45, z: prod.originalPos.get(p.uuid).z + 0.45 }, 0.8); });
+          const pcs = prod.parts.find(p => p.userData.part === 'pcs'); if (pcs) gsapTo(pcs.position, { x: prod.originalPos.get(pcs.uuid).x + 2.0, y: prod.originalPos.get(pcs.uuid).y, z: prod.originalPos.get(pcs.uuid).z + 0.9 }, 0.8);
+          const bms = prod.parts.find(p => p.userData.part === 'bms'); if (bms) gsapTo(bms.position, { x: prod.originalPos.get(bms.uuid).x + 2.9, y: prod.originalPos.get(bms.uuid).y, z: prod.originalPos.get(bms.uuid).z + 0.8 }, 0.8);
+          const hvac = prod.parts.find(p => p.userData.part === 'hvac'); if (hvac) gsapTo(hvac.position, { x: prod.originalPos.get(hvac.uuid).x - 2.0, y: prod.originalPos.get(hvac.uuid).y, z: prod.originalPos.get(hvac.uuid).z + 0.8 }, 0.8);
+        } else { resetPositions(); }
+      }
+    }
+
+    function resetView() { autoRotate = false; exploded = false; sectionMode = false; tourMode = false; applySectionMode(); updateBtnText(); resetPositions(); const cfg = { stacked: {pos:[3,2.5,5], target:[0,1.1,0]}, cabinet: {pos:[4,3,6], target:[0,1.0,0]}, container: {pos:[16,10,20], target:[0,0,0]} }[currentKey]; gsapTo(camera.position, {x:cfg.pos[0], y:cfg.pos[1], z:cfg.pos[2]}, 0.8); gsapTo(controls.target, {x:cfg.target[0], y:cfg.target[1], z:cfg.target[2]}, 0.8); document.getElementById('info-panel').classList.add('hidden'); highlightNav(null); }
 
     let tourTimer = null;
-    function tourNext() { if (!tourMode) return; const order = ['shell','battery','pcs','bms','hvac','fire','cables']; const key = order[tourIndex % order.length]; const target = parts.find(p => p.userData.part === key); if (target) { if (key === 'battery' && !exploded) { exploded = true; updateBtnText(); racks.forEach((rack, i) => { const dir = (i < 2) ? -1 : 1; const offset = (i % 2 === 0) ? 1.9 : 0.85; gsapTo(rack.position, { x: originalPositions.get(rack.uuid).x + dir * offset, y: originalPositions.get(rack.uuid).y + 0.45, z: originalPositions.get(rack.uuid).z + 0.45 }, 0.8); }); gsapTo(pcsGroup.position, { x: originalPositions.get(pcsGroup.uuid).x + 2.0, y: originalPositions.get(pcsGroup.uuid).y, z: originalPositions.get(pcsGroup.uuid).z + 0.9 }, 0.8); gsapTo(bmsGroup.position, { x: originalPositions.get(bmsGroup.uuid).x + 2.9, y: originalPositions.get(bmsGroup.uuid).y, z: originalPositions.get(bmsGroup.uuid).z + 0.8 }, 0.8); gsapTo(hvacGroup.position, { x: originalPositions.get(hvacGroup.uuid).x - 2.0, y: originalPositions.get(hvacGroup.uuid).y, z: originalPositions.get(hvacGroup.uuid).z + 0.8 }, 0.8); gsapTo(pipeGroup.position, { x: originalPositions.get(pipeGroup.uuid).x, y: originalPositions.get(pipeGroup.uuid).y + 0.9, z: originalPositions.get(pipeGroup.uuid).z - 0.4 }, 0.8); gsapTo(cableGroup.position, { x: originalPositions.get(cableGroup.uuid).x, y: originalPositions.get(cableGroup.uuid).y + 0.25, z: originalPositions.get(cableGroup.uuid).z }, 0.8); } focusPart(target); } tourIndex++; tourTimer = setTimeout(tourNext, 4500); }
+    function tourNext() { if (!tourMode) return; const parts = products[currentKey].parts; const order = parts.map(p => p.userData.part).filter((v,i,a) => v && a.indexOf(v)===i); const key = order[tourIndex % order.length]; const target = parts.find(p => p.userData.part === key); if (target) { if (currentKey !== 'container' && !exploded) { toggleExplode(); } focusPart(target); } tourIndex++; tourTimer = setTimeout(tourNext, 4500); }
 
-    window.addEventListener('keydown', (e) => { if (e.code === 'Space') { e.preventDefault(); document.getElementById('btn-explode').click(); } if (e.key === 'r' || e.key === 'R') resetView(); if (e.key === 'Tab') { e.preventDefault(); document.getElementById('btn-section').click(); } if (e.key >= '1' && e.key <= '7') { const idx = parseInt(e.key)-1; const item = navItems[idx]; if (item) { const target = parts.find(p => p.userData.part === item.part); if (target) focusPart(target); } } });
+    window.addEventListener('keydown', (e) => { if (e.code === 'Space') { e.preventDefault(); toggleExplode(); } if (e.key === 'r' || e.key === 'R') resetView(); if (e.key === 'Tab') { e.preventDefault(); document.getElementById('btn-section').click(); } if (e.key >= '1' && e.key <= '6') { const idx = parseInt(e.key)-1; const el = navContainer.children[idx]; if (el) el.click(); } });
 
     // Tweens
     const tweens = [];
     function gsapTo(target, endProps, durationSeconds) { const startProps = {}; for (const k in endProps) startProps[k] = target[k]; tweens.push({ target, startProps, endProps, duration: durationSeconds, elapsed: 0 }); }
 
-    // Stats
+    // Stats simulation
     let statT = 0;
     function updateStats(dt) {
       statT += dt;
@@ -614,36 +650,40 @@
       document.getElementById('stat-temp').textContent = temp.toFixed(1) + ' ℃'; document.getElementById('bar-temp').style.width = Math.max(0, Math.min(100, (temp - 15) / 25 * 100)) + '%';
     }
 
-    // Loop
+    // Animation loop
     const clock = new THREE.Clock();
     function animate() {
       requestAnimationFrame(animate);
       const dt = clock.getDelta(); const time = clock.getElapsedTime();
-      if (autoRotate) containerGroup.rotation.y += dt * 0.10;
-      fanGroup.rotation.z += dt * 8;
-      bmsWave.draw();
+      const prod = products[currentKey];
+      if (autoRotate) prod.group.rotation.y += dt * 0.10;
 
-      containerGroup.traverse(child => { if (child.userData && child.userData.isLed && child.material && child.material.emissive) { const base = child.userData.baseIntensity || 0.4; const phase = child.userData.phase || 0; child.material.emissiveIntensity = base + 0.15 * Math.sin(time * 3 + phase); } });
+      // fan rotation
+      if (prod.animatables.fan) prod.animatables.fan.rotation.z += dt * 8;
 
-      // cooling particles
-      const cPos = coolParticles.geometry.attributes.position.array;
-      for (let i=0;i<coolCount;i++) {
-        cPos[i*3] += coolVel[i].vx * dt; cPos[i*3+1] += coolVel[i].vy * dt; cPos[i*3+2] += coolVel[i].vz * dt; coolVel[i].life -= dt * 0.45;
-        if (coolVel[i].life <= 0) { cPos[i*3] = hvacGroup.position.x + (Math.random()-0.5)*0.7; cPos[i*3+1] = hvacGroup.position.y + 0.4; cPos[i*3+2] = hvacGroup.position.z + 0.9 + Math.random()*0.3; coolVel[i].life = 1.0; }
+      // led pulse
+      prod.group.traverse(child => { if (child.userData && child.userData.isLed && child.material && child.material.emissive) { const base = child.userData.baseIntensity || 0.4; const phase = child.userData.phase || 0; child.material.emissiveIntensity = base + 0.15 * Math.sin(time * 3 + phase); } });
+
+      // cooling particles (simple generic updraft from HVAC)
+      const cPos = prod.coolParticles.geometry.attributes.position.array;
+      let hvacPos = new THREE.Vector3();
+      const hvacPart = prod.parts.find(p => p.userData.part === 'hvac');
+      if (hvacPart) hvacPart.getWorldPosition(hvacPos);
+      for (let i=0;i<60;i++) {
+        if (hvacPart) {
+          cPos[i*3] += prod.coolVel[i].vx * dt; cPos[i*3+1] += prod.coolVel[i].vy * dt; cPos[i*3+2] += prod.coolVel[i].vz * dt; prod.coolVel[i].life -= dt * 0.5;
+          if (prod.coolVel[i].life <= 0) {
+            cPos[i*3] = hvacPos.x + (Math.random()-0.5)*0.6; cPos[i*3+1] = hvacPos.y + 0.2; cPos[i*3+2] = hvacPos.z + (Math.random()-0.5)*0.4;
+            prod.coolVel[i].life = 1.0;
+            if (currentKey === 'stacked') { prod.coolVel[i].vx = (Math.random()-0.5)*0.2; prod.coolVel[i].vy = 0.6 + Math.random()*0.4; prod.coolVel[i].vz = (Math.random()-0.5)*0.2; }
+            else if (currentKey === 'cabinet') { prod.coolVel[i].vx = 0.5 + Math.random()*0.3; prod.coolVel[i].vy = (Math.random()-0.5)*0.2; prod.coolVel[i].vz = (Math.random()-0.5)*0.2; }
+            else { prod.coolVel[i].vx = 0.7 + Math.random()*0.6; prod.coolVel[i].vy = (Math.random()-0.5)*0.1; prod.coolVel[i].vz = (Math.random()-0.5)*0.25; }
+          }
+        } else { cPos[i*3]=0; cPos[i*3+1]=-100; cPos[i*3+2]=0; }
       }
-      coolParticles.geometry.attributes.position.needsUpdate = true;
+      prod.coolParticles.geometry.attributes.position.needsUpdate = true;
 
-      // energy particles
-      const enPos = energyParticles.geometry.attributes.position.array;
-      for (let i=0;i<energyCount;i++) { const p = eProg[i]; p.t += p.speed * dt; if (p.t > 1) { p.t = 0; p.rack = Math.floor(Math.random()*racks.length); }
-        const start = new THREE.Vector3(pcsGroup.position.x - 0.55, pcsGroup.position.y + 0.35, pcsGroup.position.z + 1.0);
-        const end = new THREE.Vector3(racks[p.rack].position.x, racks[p.rack].position.y + 0.7, racks[p.rack].position.z + 1.15);
-        const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5).add(new THREE.Vector3(0, 0.25, 0));
-        const pt = new THREE.CatmullRomCurve3([start, mid, end]).getPoint(p.t);
-        enPos[i*3] = pt.x; enPos[i*3+1] = pt.y; enPos[i*3+2] = pt.z;
-      }
-      energyParticles.geometry.attributes.position.needsUpdate = true;
-
+      // tweens
       for (let i = tweens.length - 1; i >= 0; i--) { const t = tweens[i]; t.elapsed += dt; const p = Math.min(t.elapsed / t.duration, 1); const ease = 1 - Math.pow(1 - p, 3); for (const k in t.endProps) t.target[k] = t.startProps[k] + (t.endProps[k] - t.startProps[k]) * ease; if (p >= 1) tweens.splice(i, 1); }
 
       updateStats(dt); controls.update(); composer.render(); cssRenderer.render(scene, camera);
@@ -653,14 +693,10 @@
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight); composer.setSize(window.innerWidth, window.innerHeight); cssRenderer.setSize(window.innerWidth, window.innerHeight);
-      reflector.getRenderTarget().setSize(window.innerWidth * Math.min(window.devicePixelRatio, 2), window.innerHeight * Math.min(window.devicePixelRatio, 2));
     });
-    } catch (err) {
-      const errorLog = document.getElementById('error-log');
-      errorLog.classList.remove('hidden');
-      errorLog.textContent = '3D 初始化失败: ' + err.message + '\n' + err.stack;
-      console.error(err);
-    }
+
+    // Init
+    switchProduct(initialProduct);
   </script>
 </body>
 </html>
