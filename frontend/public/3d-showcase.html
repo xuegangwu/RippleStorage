@@ -6,56 +6,77 @@
   <title>RippleStorage 3D - 工商业储能产品系列</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    :root { --accent: #00d9a5; --accent-glow: rgba(0, 217, 165, 0.35); }
     body { margin: 0; overflow: hidden; background: #02060a; font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif; }
     #canvas-container { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; }
     #css2d-container { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; pointer-events: none; }
     .glass {
-      background: rgba(8, 20, 34, 0.82);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(0, 217, 165, 0.12);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      background: rgba(6, 16, 28, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04);
     }
-    .glow-text { text-shadow: 0 0 14px rgba(0, 217, 165, 0.55); }
+    .glass-accent { border-color: rgba(0, 217, 165, 0.18); box-shadow: 0 12px 40px rgba(0,0,0,0.55), 0 0 20px rgba(0,217,165,0.06), inset 0 1px 0 rgba(255,255,255,0.04); }
+    .glow-text { text-shadow: 0 0 16px rgba(0, 217, 165, 0.6); }
     .btn-primary {
-      background: linear-gradient(135deg, #00d9a5 0%, #00a37a 100%);
+      background: linear-gradient(135deg, #00d9a5 0%, #00b386 100%);
       color: #02080f; font-weight: 700; transition: all .2s ease;
+      box-shadow: 0 4px 14px rgba(0, 217, 165, 0.25);
     }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0, 217, 165, 0.4); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(0, 217, 165, 0.4); }
     .btn-secondary {
-      background: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.04);
       color: #e2e8f0;
-      border: 1px solid rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.08);
       transition: all .2s ease;
     }
-    .btn-secondary:hover { background: rgba(255,255,255,0.10); border-color: rgba(0,217,165,0.45); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.08); border-color: rgba(0,217,165,0.5); color: #fff; }
+    .btn-tertiary {
+      background: rgba(255,255,255,0.03);
+      color: #94a3b8;
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all .2s ease;
+    }
+    .btn-tertiary:hover { background: rgba(255,255,255,0.06); color: #e2e8f0; }
     .tag-badge {
-      background: rgba(0, 217, 165, 0.12);
+      background: rgba(0, 217, 165, 0.10);
       color: #00d9a5;
       border: 1px solid rgba(0, 217, 165, 0.25);
     }
     .nav-item { transition: all .15s ease; border-left: 2px solid transparent; }
-    .nav-item:hover { background: rgba(0,217,165,0.08); border-left-color: rgba(0,217,165,0.6); }
-    .nav-item.active { background: rgba(0,217,165,0.15); border-left-color: #00d9a5; }
+    .nav-item:hover { background: rgba(0,217,165,0.08); border-left-color: rgba(0,217,165,0.5); }
+    .nav-item.active { background: rgba(0,217,165,0.14); border-left-color: #00d9a5; }
+    .tab-btn { transition: all .18s ease; }
+    .tab-btn.active { background: rgba(0,217,165,0.12); border-color: rgba(0,217,165,0.45); color: #00d9a5; box-shadow: 0 0 16px rgba(0,217,165,0.12); }
     .info-enter { animation: slideIn .35s ease both; }
-    @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-    .pulse-dot { animation: pulse 2s infinite; }
-    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,217,165,0.5); } 70% { box-shadow: 0 0 0 6px rgba(0,217,165,0); } 100% { box-shadow: 0 0 0 0 rgba(0,217,165,0); } }
-    .stat-bar-bg { background: rgba(255,255,255,0.08); border-radius: 999px; height: 6px; overflow: hidden; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: translateX(0); } }
+    .pulse-dot { animation: pulse 2.2s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,217,165,0.45); } 70% { box-shadow: 0 0 0 7px rgba(0,217,165,0); } 100% { box-shadow: 0 0 0 0 rgba(0,217,165,0); } }
+    .stat-bar-bg { background: rgba(255,255,255,0.06); border-radius: 999px; height: 5px; overflow: hidden; }
     .stat-bar-fill { height: 100%; border-radius: 999px; transition: width .6s ease; }
     .label-card {
-      background: rgba(0,0,0,0.55);
+      background: rgba(4, 12, 22, 0.72);
       border: 1px solid rgba(0,217,165,0.35);
-      border-radius: 6px;
-      padding: 4px 8px;
+      border-radius: 8px;
+      padding: 5px 10px;
       color: #00d9a5;
       font-size: 11px;
       font-weight: 600;
       pointer-events: none;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.45), 0 0 10px rgba(0,217,165,0.15);
+      letter-spacing: 0.3px;
     }
-    .tab-btn { transition: all .15s ease; }
-    .tab-btn.active { background: rgba(0,217,165,0.15); border-color: rgba(0,217,165,0.6); color: #00d9a5; }
+    .spinner {
+      width: 48px; height: 48px; border-radius: 50%;
+      border: 3px solid rgba(0,217,165,0.15);
+      border-top-color: #00d9a5;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loading { transition: opacity .5s ease; }
+    .hidden-fade { opacity: 0; pointer-events: none; }
   </style>
   <script type="importmap">
   {
@@ -67,6 +88,12 @@
   </script>
 </head>
 <body>
+  <!-- Loading -->
+  <div id="loading" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#02060a]">
+    <div class="spinner mb-4"></div>
+    <div class="text-slate-300 text-sm">正在加载 3D 场景...</div>
+  </div>
+
   <div id="canvas-container"></div>
   <div id="css2d-container"></div>
 
@@ -79,19 +106,14 @@
       </a>
       <div class="w-px h-5 bg-white/10 hidden sm:block"></div>
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-md bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-white font-bold">R</div>
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-white font-bold shadow-lg shadow-emerald-500/20">R</div>
         <div>
           <h1 class="text-white text-lg font-semibold tracking-wide">RippleStorage <span class="text-emerald-400">3D</span></h1>
-          <p class="text-slate-400 text-xs">工商业储能产品系列可视化</p>
+          <p class="text-slate-400 text-[11px]">工商业储能产品系列可视化</p>
         </div>
       </div>
     </div>
     <div class="flex items-center gap-3 pointer-events-auto">
-      <div class="hidden md:flex items-center gap-2 text-xs text-slate-300 mr-2">
-        <span class="px-2 py-1 rounded bg-white/5 border border-white/10">堆叠一体机</span>
-        <span class="px-2 py-1 rounded bg-white/5 border border-white/10">户外柜一体机</span>
-        <span class="px-2 py-1 rounded bg-white/5 border border-white/10">集装箱式储能</span>
-      </div>
       <a href="/" class="btn-primary px-4 py-2 rounded-lg text-sm hidden sm:inline-flex items-center gap-2">
         <span>开始推演</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -100,20 +122,20 @@
   </div>
 
   <!-- Product Switcher Tabs -->
-  <div class="fixed top-20 left-1/2 -translate-x-1/2 z-20 hidden md:block">
-    <div class="glass rounded-full px-2 py-1.5 flex items-center gap-1">
-      <button class="tab-btn active px-4 py-1.5 rounded-full text-sm text-slate-300 border border-transparent" data-key="stacked">工商业堆叠一体机</button>
-      <button class="tab-btn px-4 py-1.5 rounded-full text-sm text-slate-300 border border-transparent" data-key="cabinet">工商业一体机</button>
-      <button class="tab-btn px-4 py-1.5 rounded-full text-sm text-slate-300 border border-transparent" data-key="container">大型储能集装箱</button>
+  <div class="fixed top-[72px] left-1/2 -translate-x-1/2 z-20">
+    <div class="glass glass-accent rounded-full px-2 py-1.5 flex items-center gap-1">
+      <button class="tab-btn active px-4 py-2 rounded-full text-sm text-slate-300 border border-transparent font-medium" data-key="stacked">工商业堆叠一体机</button>
+      <button class="tab-btn px-4 py-2 rounded-full text-sm text-slate-300 border border-transparent font-medium" data-key="cabinet">工商业户外柜</button>
+      <button class="tab-btn px-4 py-2 rounded-full text-sm text-slate-300 border border-transparent font-medium" data-key="container">大型储能集装箱</button>
     </div>
   </div>
 
   <!-- Left Navigation Tree -->
-  <div class="fixed top-20 left-6 bottom-24 w-56 glass rounded-xl p-3 z-20 flex flex-col hidden md:flex">
-    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-2">部件导航</div>
+  <div class="fixed top-[140px] left-6 bottom-28 w-60 glass rounded-xl p-3 z-20 flex flex-col hidden md:flex">
+    <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 px-2">部件导航</div>
     <div class="flex-1 overflow-y-auto space-y-1" id="part-nav"></div>
     <div class="mt-2 pt-2 border-t border-white/10 px-2">
-      <button id="btn-tour" class="btn-primary w-full px-3 py-2 rounded-lg text-xs flex items-center justify-center gap-2">
+      <button id="btn-tour" class="btn-primary w-full px-3 py-2.5 rounded-lg text-xs flex items-center justify-center gap-2">
         <span class="w-2 h-2 rounded-full bg-black/60 pulse-dot"></span>
         开启自动导览
       </button>
@@ -121,28 +143,29 @@
   </div>
 
   <!-- Part Info Panel -->
-  <div id="info-panel" class="fixed top-20 right-6 w-80 glass rounded-xl p-5 hidden z-20 text-slate-200">
+  <div id="info-panel" class="fixed top-[140px] right-6 w-80 glass glass-accent rounded-xl p-5 hidden z-20 text-slate-200">
     <div class="flex items-start justify-between mb-3">
       <div>
         <div id="info-tag" class="tag-badge inline-block px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider mb-1">BATTERY</div>
         <h2 id="info-title" class="text-xl font-bold text-white glow-text">电池簇</h2>
       </div>
-      <button id="btn-close-info" class="text-slate-400 hover:text-white text-xl leading-none">×</button>
+      <button id="btn-close-info" class="text-slate-400 hover:text-white text-2xl leading-none">×</button>
     </div>
     <p id="info-desc" class="text-sm text-slate-300 leading-relaxed mb-4"></p>
     <div class="grid grid-cols-2 gap-2 text-xs">
-      <div class="bg-white/5 rounded-lg p-2 border border-white/10"><div class="text-slate-400" id="spec-label-1">额定容量</div><div id="info-spec1" class="text-white font-semibold mt-0.5">-</div></div>
-      <div class="bg-white/5 rounded-lg p-2 border border-white/10"><div class="text-slate-400" id="spec-label-2">工作电压</div><div id="info-spec2" class="text-white font-semibold mt-0.5">-</div></div>
-      <div class="bg-white/5 rounded-lg p-2 border border-white/10"><div class="text-slate-400" id="spec-label-3">循环寿命</div><div id="info-spec3" class="text-white font-semibold mt-0.5">-</div></div>
-      <div class="bg-white/5 rounded-lg p-2 border border-white/10"><div class="text-slate-400" id="spec-label-4">防护等级</div><div id="info-spec4" class="text-white font-semibold mt-0.5">-</div></div>
+      <div class="bg-white/5 rounded-lg p-2.5 border border-white/10"><div class="text-slate-400" id="spec-label-1">额定容量</div><div id="info-spec1" class="text-white font-semibold mt-0.5">-</div></div>
+      <div class="bg-white/5 rounded-lg p-2.5 border border-white/10"><div class="text-slate-400" id="spec-label-2">工作电压</div><div id="info-spec2" class="text-white font-semibold mt-0.5">-</div></div>
+      <div class="bg-white/5 rounded-lg p-2.5 border border-white/10"><div class="text-slate-400" id="spec-label-3">循环寿命</div><div id="info-spec3" class="text-white font-semibold mt-0.5">-</div></div>
+      <div class="bg-white/5 rounded-lg p-2.5 border border-white/10"><div class="text-slate-400" id="spec-label-4">防护等级</div><div id="info-spec4" class="text-white font-semibold mt-0.5">-</div></div>
     </div>
+    <div class="mt-3 text-[11px] text-slate-500">提示：点击模型上的门可打开/关闭</div>
   </div>
 
   <!-- Live Stats HUD -->
   <div class="fixed bottom-24 right-6 w-64 glass rounded-xl p-4 z-20 hidden md:block">
     <div class="flex items-center justify-between mb-3">
-      <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">实时运行状态</div>
-      <div class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></div>
+      <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">实时运行状态</div>
+      <div class="flex items-center gap-1.5"><div class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></div><span class="text-[10px] text-emerald-400">运行中</span></div>
     </div>
     <div class="space-y-3 text-xs">
       <div><div class="flex justify-between text-slate-300 mb-1"><span>系统 SOC</span><span id="stat-soc" class="text-white font-semibold">78%</span></div><div class="stat-bar-bg"><div id="bar-soc" class="stat-bar-fill bg-emerald-400" style="width:78%"></div></div></div>
@@ -156,19 +179,19 @@
 
   <!-- Controls -->
   <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-20">
-    <div class="glass rounded-full px-3 py-2 flex items-center gap-2">
-      <button id="btn-rotate" class="btn-primary px-4 py-2 rounded-full text-sm">自动旋转</button>
-      <button id="btn-explode" class="btn-secondary px-4 py-2 rounded-full text-sm">爆炸图</button>
-      <button id="btn-section" class="btn-secondary px-4 py-2 rounded-full text-sm">剖面视图</button>
-      <button id="btn-reset" class="btn-secondary px-4 py-2 rounded-full text-sm">重置视角</button>
+    <div class="glass glass-accent rounded-full px-2 py-2 flex items-center gap-1.5">
+      <button id="btn-rotate" class="btn-secondary px-4 py-2 rounded-full text-sm font-medium">自动旋转</button>
+      <button id="btn-explode" class="btn-secondary px-4 py-2 rounded-full text-sm font-medium">爆炸图</button>
+      <button id="btn-section" class="btn-secondary px-4 py-2 rounded-full text-sm font-medium">剖面视图</button>
+      <button id="btn-reset" class="btn-tertiary px-4 py-2 rounded-full text-sm font-medium">重置视角</button>
     </div>
   </div>
 
   <!-- Legend -->
   <div class="fixed bottom-6 left-6 z-20 glass rounded-xl px-4 py-3 text-xs text-slate-300 max-w-xs hidden md:block">
-    <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> 鼠标左键拖拽旋转 · 滚轮缩放</div>
-    <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> 点击部件查看详情 / 左侧导航聚焦</div>
-    <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> 快捷键: 空格爆炸 · Tab剖面 · R重置 · 1~6聚焦</div>
+    <div class="flex items-center gap-2 mb-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> 左键拖拽旋转 · 滚轮缩放</div>
+    <div class="flex items-center gap-2 mb-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> 点击部件查看详情 · 点击门打开</div>
+    <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> 空格爆炸 · Tab剖面 · R重置</div>
   </div>
 
   <script>
@@ -184,25 +207,24 @@
     import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 
-    // ===== Shared materials =====
-    const shellMat = new THREE.MeshPhysicalMaterial({ color: 0xddeeff, roughness: 0.35, metalness: 0.65, clearcoat: 0.3, clearcoatRoughness: 0.2 });
-    const shellCutawayMat = new THREE.MeshPhysicalMaterial({ color: 0xddeeff, roughness: 0.35, metalness: 0.65, transparent: true, opacity: 0.10, side: THREE.DoubleSide, depthWrite: false });
-    const darkMetalMat = new THREE.MeshStandardMaterial({ color: 0x263748, roughness: 0.40, metalness: 0.80 });
-    const batteryFrameMat = new THREE.MeshStandardMaterial({ color: 0x111b26, roughness: 0.5, metalness: 0.35 });
-    const cellMat = new THREE.MeshStandardMaterial({ color: 0x0b1c2e, roughness: 0.3, metalness: 0.20 });
-    const cellEmissiveMat = new THREE.MeshStandardMaterial({ color: 0x00d9a5, roughness: 0.2, metalness: 0.1, emissive: 0x00d9a5, emissiveIntensity: 0.45 });
-    const pcsMat = new THREE.MeshPhysicalMaterial({ color: 0x3b82f6, roughness: 0.30, metalness: 0.55, clearcoat: 0.2 });
-    const bmsMat = new THREE.MeshPhysicalMaterial({ color: 0xf59e0b, roughness: 0.30, metalness: 0.50, clearcoat: 0.2 });
-    const hvacMat = new THREE.MeshPhysicalMaterial({ color: 0x64748b, roughness: 0.35, metalness: 0.60, clearcoat: 0.15 });
-    const pipeMat = new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.25, metalness: 0.50 });
-    const cableMat = new THREE.MeshStandardMaterial({ color: 0xff3333, roughness: 0.4, metalness: 0.2 });
-    const commCableMat = new THREE.MeshStandardMaterial({ color: 0x3b82f6, roughness: 0.4, metalness: 0.2 });
-    const floorMat = new THREE.MeshPhysicalMaterial({ color: 0x040a10, roughness: 0.15, metalness: 0.45, clearcoat: 0.25 });
+    // ===== Materials =====
+    const shellMat = new THREE.MeshPhysicalMaterial({ color: 0xe8f0f8, roughness: 0.28, metalness: 0.55, clearcoat: 0.35, clearcoatRoughness: 0.18 });
+    const shellCutawayMat = new THREE.MeshPhysicalMaterial({ color: 0xe8f0f8, roughness: 0.28, metalness: 0.55, transparent: true, opacity: 0.08, side: THREE.DoubleSide, depthWrite: false });
+    const darkMetalMat = new THREE.MeshStandardMaterial({ color: 0x1f2d3d, roughness: 0.35, metalness: 0.82 });
+    const glassMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.05, metalness: 0.1, transmission: 0.35, transparent: true, opacity: 0.25, thickness: 0.8, clearcoat: 1.0, clearcoatRoughness: 0.05 });
+    const batteryFrameMat = new THREE.MeshStandardMaterial({ color: 0x0f1a24, roughness: 0.45, metalness: 0.40 });
+    const cellMat = new THREE.MeshStandardMaterial({ color: 0x0a151f, roughness: 0.25, metalness: 0.25 });
+    const cellEmissiveMat = new THREE.MeshStandardMaterial({ color: 0x00d9a5, roughness: 0.15, metalness: 0.1, emissive: 0x00d9a5, emissiveIntensity: 0.55 });
+    const pcsMat = new THREE.MeshPhysicalMaterial({ color: 0x3b82f6, roughness: 0.28, metalness: 0.58, clearcoat: 0.25 });
+    const bmsMat = new THREE.MeshPhysicalMaterial({ color: 0xf59e0b, roughness: 0.28, metalness: 0.52, clearcoat: 0.25 });
+    const hvacMat = new THREE.MeshPhysicalMaterial({ color: 0x5a6b7d, roughness: 0.32, metalness: 0.62, clearcoat: 0.2 });
+    const pipeMat = new THREE.MeshStandardMaterial({ color: 0xe63946, roughness: 0.22, metalness: 0.55 });
+    const floorMat = new THREE.MeshPhysicalMaterial({ color: 0x03080d, roughness: 0.12, metalness: 0.55, clearcoat: 0.3 });
 
     function makePanelCanvas(text) {
       const c = document.createElement('canvas'); c.width = 128; c.height = 64;
       const ctx = c.getContext('2d');
-      ctx.fillStyle = '#0a151f'; ctx.fillRect(0,0,128,64);
+      ctx.fillStyle = '#050b14'; ctx.fillRect(0,0,128,64);
       ctx.strokeStyle = '#00d9a5'; ctx.lineWidth = 2; ctx.strokeRect(2,2,124,60);
       ctx.fillStyle = '#00d9a5'; ctx.font = 'bold 20px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(text, 64, 32);
@@ -214,21 +236,21 @@
       const obj = new CSS2DObject(div); obj.position.set(x,y,z); parent.add(obj); return obj;
     }
 
-    // ===== Scene setup =====
+    // ===== Scene =====
     const container = document.getElementById('canvas-container');
     const css2dContainer = document.getElementById('css2d-container');
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x02060a);
-    scene.fog = new THREE.FogExp2(0x02060a, 0.012);
+    scene.fog = new THREE.FogExp2(0x02060a, 0.014);
 
-    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(12, 8, 16);
+    const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(3, 2.5, 5.5);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
     container.appendChild(renderer.domElement);
 
     const cssRenderer = new CSS2DRenderer({ element: css2dContainer });
@@ -236,161 +258,196 @@
 
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.45, 0.25, 0.85);
+    const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.42, 0.22, 0.88);
     composer.addPass(bloomPass);
 
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true; controls.dampingFactor = 0.06;
-    controls.maxPolarAngle = Math.PI / 2 - 0.02; controls.minDistance = 4; controls.maxDistance = 55;
+    controls.enableDamping = true; controls.dampingFactor = 0.07;
+    controls.maxPolarAngle = Math.PI / 2 - 0.02; controls.minDistance = 2; controls.maxDistance = 55;
 
     const pmremGenerator = new THREE.PMREMGenerator(renderer); pmremGenerator.compileEquirectangularShader();
     new RGBELoader().load('https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/autoshop_01_1k.hdr', (texture) => {
       scene.environment = pmremGenerator.fromEquirectangular(texture).texture; texture.dispose();
-    }, undefined, () => { scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture; });
+      document.getElementById('loading').classList.add('hidden-fade'); setTimeout(() => document.getElementById('loading').remove(), 600);
+    }, undefined, () => {
+      scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture;
+      document.getElementById('loading').classList.add('hidden-fade'); setTimeout(() => document.getElementById('loading').remove(), 600);
+    });
 
     // Lights
-    const ambient = new THREE.AmbientLight(0xffffff, 0.15); scene.add(ambient);
-    const dirLight = new THREE.DirectionalLight(0xffffff, 2.0); dirLight.position.set(10, 20, 10); dirLight.castShadow = true; dirLight.shadow.mapSize.set(2048,2048); dirLight.shadow.bias = -0.0005; scene.add(dirLight);
-    const fillLight = new THREE.DirectionalLight(0x00d9a5, 0.45); fillLight.position.set(-12, 6, -10); scene.add(fillLight);
-    const spot = new THREE.SpotLight(0x00aaff, 1.5); spot.position.set(0, 18, -18); spot.lookAt(0,0,0); spot.angle = Math.PI / 6; spot.penumbra = 0.5; scene.add(spot);
+    const hemi = new THREE.HemisphereLight(0xffffff, 0x0a1a2a, 0.35); scene.add(hemi);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.8); dirLight.position.set(8, 18, 10); dirLight.castShadow = true;
+    dirLight.shadow.mapSize.set(2048,2048); dirLight.shadow.bias = -0.0004; dirLight.shadow.radius = 2; scene.add(dirLight);
+    const fill = new THREE.DirectionalLight(0x00d9a5, 0.35); fill.position.set(-10, 5, -8); scene.add(fill);
+    const rim = new THREE.SpotLight(0x00aaff, 1.2); rim.position.set(0, 16, -14); rim.lookAt(0,0,0); rim.angle = Math.PI/5; rim.penumbra = 0.6; scene.add(rim);
 
     // Floor
-    const floorMesh = new THREE.Mesh(new THREE.PlaneGeometry(80,80), floorMat);
-    floorMesh.rotation.x = -Math.PI / 2; floorMesh.position.y = -0.05; floorMesh.receiveShadow = true; scene.add(floorMesh);
-    const grid = new THREE.GridHelper(80,80, 0x112233, 0x0a151f); grid.position.y = -0.04; scene.add(grid);
+    const floorMesh = new THREE.Mesh(new THREE.PlaneGeometry(100,100), floorMat);
+    floorMesh.rotation.x = -Math.PI / 2; floorMesh.position.y = -0.02; floorMesh.receiveShadow = true; scene.add(floorMesh);
+    const grid = new THREE.GridHelper(100,100, 0x132233, 0x0a151f); grid.position.y = -0.015; scene.add(grid);
 
     // ===== Product builders =====
-    const products = {}; // key -> { group, parts, particles, labels, originalPos, animatables }
+    const products = {};
     let currentKey = 'stacked';
 
     // ---------- Stacked All-in-One ----------
     function buildStacked() {
       const g = new THREE.Group();
       const parts = [];
+      const shellW = 0.95, shellH = 2.15, shellD = 0.82;
 
-      // Enclosure
-      const shellW = 1.0, shellH = 2.2, shellD = 0.85;
+      // Shell group
       const shell = new THREE.Group();
-      const boxMat = shellMat.clone();
-      const back = new THREE.Mesh(new THREE.BoxGeometry(shellW, shellH, 0.04), boxMat); back.position.set(0, shellH/2, -shellD/2); back.castShadow = true; shell.add(back);
-      const left = new THREE.Mesh(new THREE.BoxGeometry(0.04, shellH, shellD), boxMat); left.position.set(-shellW/2, shellH/2, 0); left.castShadow = true; shell.add(left);
-      const right = new THREE.Mesh(new THREE.BoxGeometry(0.04, shellH, shellD), boxMat); right.position.set(shellW/2, shellH/2, 0); right.castShadow = true; shell.add(right);
-      const top = new THREE.Mesh(new THREE.BoxGeometry(shellW, 0.04, shellD), boxMat); top.position.set(0, shellH, 0); top.castShadow = true; shell.add(top);
-      const bottom = new THREE.Mesh(new THREE.BoxGeometry(shellW, 0.04, shellD), boxMat); bottom.position.set(0, 0, 0); bottom.castShadow = true; shell.add(bottom);
-      const door = new THREE.Mesh(new THREE.BoxGeometry(0.04, shellH-0.08, shellD-0.04), boxMat); door.position.set(0, shellH/2, shellD/2); door.castShadow = true; shell.add(door);
-      shell.userData = { part: 'shell', name: '堆叠一体机壳体', tag: 'SHELL', desc: '立式一体化储能柜，采用冷轧钢板+喷涂工艺，防护等级 IP55。', specs: ['215 kWh', 'IP55', '户外型', '立式'] };
+      const sm = shellMat.clone();
+      const back = new THREE.Mesh(new THREE.BoxGeometry(shellW, shellH, 0.04), sm); back.position.set(0, shellH/2, -shellD/2); back.castShadow = true; back.receiveShadow = true; shell.add(back);
+      const left = new THREE.Mesh(new THREE.BoxGeometry(0.04, shellH, shellD), sm); left.position.set(-shellW/2, shellH/2, 0); left.castShadow = true; left.receiveShadow = true; shell.add(left);
+      const right = new THREE.Mesh(new THREE.BoxGeometry(0.04, shellH, shellD), sm); right.position.set(shellW/2, shellH/2, 0); right.castShadow = true; right.receiveShadow = true; shell.add(right);
+      const top = new THREE.Mesh(new THREE.BoxGeometry(shellW, 0.04, shellD), sm); top.position.set(0, shellH, 0); top.castShadow = true; top.receiveShadow = true; shell.add(top);
+      const bottom = new THREE.Mesh(new THREE.BoxGeometry(shellW, 0.04, shellD), sm); bottom.position.set(0, 0, 0); bottom.castShadow = true; bottom.receiveShadow = true; shell.add(bottom);
+      shell.userData = { part: 'shell', name: '堆叠一体机壳体', tag: 'SHELL', desc: '立式一体化储能柜，冷轧钢板+喷涂，前玻璃门设计，防护等级 IP55。', specs: ['215 kWh', 'IP55', '户外型', '立式'] };
       g.add(shell); parts.push(shell);
 
-      // Battery stacks (5 layers)
+      // Glass doors (hinged)
+      const doorL = new THREE.Group(); doorL.position.set(0, shellH/2, shellD/2);
+      const dLFrame = new THREE.Mesh(new THREE.BoxGeometry(shellW/2-0.01, shellH-0.06, 0.025), darkMetalMat); dLFrame.position.set(-shellW/4, 0, 0); dLFrame.castShadow = true; doorL.add(dLFrame);
+      const dLGlass = new THREE.Mesh(new THREE.BoxGeometry(shellW/2-0.06, shellH-0.12, 0.01), glassMat); dLGlass.position.set(-shellW/4, 0, 0.01); doorL.add(dLGlass);
+      doorL.userData = { part: 'doorL', name: '左玻璃门', tag: 'DOOR', isDoor: true, hingeSide: 'left' };
+      g.add(doorL); parts.push(doorL);
+
+      const doorR = new THREE.Group(); doorR.position.set(0, shellH/2, shellD/2);
+      const dRFrame = new THREE.Mesh(new THREE.BoxGeometry(shellW/2-0.01, shellH-0.06, 0.025), darkMetalMat); dRFrame.position.set(shellW/4, 0, 0); dRFrame.castShadow = true; doorR.add(dRFrame);
+      const dRGlass = new THREE.Mesh(new THREE.BoxGeometry(shellW/2-0.06, shellH-0.12, 0.01), glassMat); dRGlass.position.set(shellW/4, 0, 0.01); doorR.add(dRGlass);
+      doorR.userData = { part: 'doorR', name: '右玻璃门', tag: 'DOOR', isDoor: true, hingeSide: 'right' };
+      g.add(doorR); parts.push(doorR);
+
+      // Stacks
       const stacks = [];
       for (let i=0;i<5;i++) {
-        const stack = new THREE.Group(); stack.position.set(0, 0.25 + i*0.38, 0);
-        const mod = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.32, 0.72), cellMat.clone()); mod.castShadow = true; stack.add(mod);
-        const led = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.01, 0.01), cellEmissiveMat.clone());
-        led.position.set(0.42, 0.1, 0.30); led.userData = { isLed: true, baseIntensity: 0.5, phase: i*0.5 }; stack.add(led);
+        const stack = new THREE.Group(); stack.position.set(0, 0.22 + i*0.38, 0);
+        const mod = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.32, 0.68), cellMat.clone()); mod.castShadow = true; mod.receiveShadow = true; stack.add(mod);
+        // Bumper + handle
+        const handle = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.02, 0.02), darkMetalMat); handle.position.set(0, 0, 0.36); stack.add(handle);
+        const led = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.01, 0.01), cellEmissiveMat.clone()); led.position.set(0.40, 0.08, 0.35); led.userData = { isLed: true, baseIntensity: 0.5, phase: i*0.5 }; stack.add(led);
         stack.userData = { part: 'stack' + i, name: '电池模组 L' + (i+1), tag: 'MODULE', desc: '磷酸铁锂堆叠模组，单模组 43kWh，支持即插即用。', specs: ['43 kWh', '768 Vdc', '≥8000 次', 'IP55'] };
         g.add(stack); stacks.push(stack); parts.push(stack);
       }
 
-      // PCS/BMS top unit
-      const topUnit = new THREE.Group(); topUnit.position.set(0, shellH - 0.22, 0);
-      const pcs = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.18, 0.78), pcsMat); pcs.castShadow = true; topUnit.add(pcs);
-      const bms = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.18, 0.78), bmsMat); bms.position.set(0, -0.20, 0); bms.castShadow = true; topUnit.add(bms);
-      topUnit.userData = { part: 'pcs', name: '顶部 PCS + BMS', tag: 'CONTROL', desc: '顶部集成双向变流器与电池管理系统，最大功率 100kW。', specs: ['100 kW', '≥98.6%', 'IP54', '≤30ms'] };
-      g.add(topUnit); parts.push(topUnit);
+      // Control unit (top)
+      const ctrl = new THREE.Group(); ctrl.position.set(0, shellH - 0.20, 0);
+      const pcs = new THREE.Mesh(new THREE.BoxGeometry(0.88, 0.16, 0.72), pcsMat); pcs.castShadow = true; pcs.receiveShadow = true; ctrl.add(pcs);
+      const bms = new THREE.Mesh(new THREE.BoxGeometry(0.88, 0.16, 0.72), bmsMat); bms.position.set(0, -0.18, 0); bms.castShadow = true; bms.receiveShadow = true; ctrl.add(bms);
+      ctrl.userData = { part: 'pcs', name: '顶部 PCS + BMS', tag: 'CONTROL', desc: '顶部集成双向变流器与电池管理系统，最大功率 100kW。', specs: ['100 kW', '≥98.6%', 'IP54', '≤30ms'] };
+      g.add(ctrl); parts.push(ctrl);
 
       // HVAC bottom
-      const hvac = new THREE.Group(); hvac.position.set(0, 0.12, 0);
-      const hvacBody = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.20, 0.78), hvacMat); hvacBody.castShadow = true; hvac.add(hvacBody);
-      const fan = new THREE.Group(); fan.position.set(0, 0.11, 0.20);
-      for (let i=0;i<4;i++) { const b = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.04, 0.01), darkMetalMat); b.rotation.z = i*Math.PI/2; fan.add(b); }
+      const hvac = new THREE.Group(); hvac.position.set(0, 0.14, 0);
+      const hvacBody = new THREE.Mesh(new THREE.BoxGeometry(0.88, 0.20, 0.72), hvacMat); hvacBody.castShadow = true; hvacBody.receiveShadow = true; hvac.add(hvacBody);
+      const fan = new THREE.Group(); fan.position.set(0, 0.11, 0.18);
+      for (let i=0;i<4;i++) { const b = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.03, 0.01), darkMetalMat); b.rotation.z = i*Math.PI/2; fan.add(b); }
       hvac.add(fan); hvac.userData = { part: 'hvac', name: '底部空调系统', tag: 'HVAC', desc: '底部风冷散热，确保电芯温差 ≤3℃。', specs: ['ΔT≤3℃', '5kW', 'IP55', '-20~45℃'] };
       g.add(hvac); parts.push(hvac);
 
       // Labels
       const labels = new THREE.Group(); g.add(labels);
-      addLabel(labels, 'PCS 100kW', 0, shellH - 0.12, 0.45);
-      addLabel(labels, 'HVAC', 0, 0.25, 0.45);
+      addLabel(labels, 'PCS 100kW', 0, shellH - 0.10, 0.48);
+      addLabel(labels, 'HVAC', 0, 0.28, 0.48);
 
-      return { group: g, parts, animatables: { fan }, labels };
+      return { group: g, parts, animatables: { fan }, labels, doors: [doorL, doorR] };
     }
 
     // ---------- Cabinet All-in-One ----------
     function buildCabinet() {
       const g = new THREE.Group();
       const parts = [];
+      const cw = 1.55, ch = 1.95, cd = 1.05;
 
-      const cw = 1.6, ch = 2.0, cd = 1.0;
-      // Shell
       const shell = new THREE.Group();
-      const boxMat = shellMat.clone();
-      const cBack = new THREE.Mesh(new THREE.BoxGeometry(cw, ch, 0.04), boxMat); cBack.position.set(0, ch/2, -cd/2); cBack.castShadow = true; shell.add(cBack);
-      const cLeft = new THREE.Mesh(new THREE.BoxGeometry(0.04, ch, cd), boxMat); cLeft.position.set(-cw/2, ch/2, 0); cLeft.castShadow = true; shell.add(cLeft);
-      const cRight = new THREE.Mesh(new THREE.BoxGeometry(0.04, ch, cd), boxMat); cRight.position.set(cw/2, ch/2, 0); cRight.castShadow = true; shell.add(cRight);
-      const cTop = new THREE.Mesh(new THREE.BoxGeometry(cw, 0.04, cd), boxMat); cTop.position.set(0, ch, 0); cTop.castShadow = true; shell.add(cTop);
-      const cBot = new THREE.Mesh(new THREE.BoxGeometry(cw, 0.04, cd), boxMat); cBot.position.set(0, 0, 0); cBot.castShadow = true; shell.add(cBot);
-      const cDoor = new THREE.Mesh(new THREE.BoxGeometry(0.04, ch-0.06, cd-0.04), boxMat); cDoor.position.set(0, ch/2, cd/2); cDoor.castShadow = true; shell.add(cDoor);
-      shell.userData = { part: 'shell', name: '户外柜壳体', tag: 'SHELL', desc: '户外空调式储能柜，防雨防尘，适配园区/工厂侧部署。', specs: ['100 kWh', 'IP55', '户外型', '卧式'] };
+      const sm = shellMat.clone();
+      const cBack = new THREE.Mesh(new THREE.BoxGeometry(cw, ch, 0.04), sm); cBack.position.set(0, ch/2, -cd/2); cBack.castShadow = true; cBack.receiveShadow = true; shell.add(cBack);
+      const cLeft = new THREE.Mesh(new THREE.BoxGeometry(0.04, ch, cd), sm); cLeft.position.set(-cw/2, ch/2, 0); cLeft.castShadow = true; cLeft.receiveShadow = true; shell.add(cLeft);
+      const cRight = new THREE.Mesh(new THREE.BoxGeometry(0.04, ch, cd), sm); cRight.position.set(cw/2, ch/2, 0); cRight.castShadow = true; cRight.receiveShadow = true; shell.add(cRight);
+      const cTop = new THREE.Mesh(new THREE.BoxGeometry(cw, 0.04, cd), sm); cTop.position.set(0, ch, 0); cTop.castShadow = true; cTop.receiveShadow = true; shell.add(cTop);
+      const cBot = new THREE.Mesh(new THREE.BoxGeometry(cw, 0.04, cd), sm); cBot.position.set(0, 0, 0); cBot.castShadow = true; cBot.receiveShadow = true; shell.add(cBot);
+      // Roof canopy
+      const canopy = new THREE.Mesh(new THREE.BoxGeometry(cw+0.16, 0.04, cd+0.16), sm); canopy.position.set(0, ch+0.04, 0); canopy.castShadow = true; shell.add(canopy);
+      // Louvers on sides
+      for (let i=0;i<6;i++) {
+        const louvL = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.06, 0.70), darkMetalMat); louvL.position.set(-cw/2-0.01, 0.35 + i*0.26, 0); shell.add(louvL);
+        const louvR = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.06, 0.70), darkMetalMat); louvR.position.set(cw/2+0.01, 0.35 + i*0.26, 0); shell.add(louvR);
+      }
+      shell.userData = { part: 'shell', name: '户外柜壳体', tag: 'SHELL', desc: '户外空调式储能柜，防雨防尘，双侧百叶通风，适配园区/工厂侧部署。', specs: ['100 kWh', 'IP55', '户外型', '卧式'] };
       g.add(shell); parts.push(shell);
 
-      // Battery racks (2 columns)
+      // Double doors
+      const doorL = new THREE.Group(); doorL.position.set(-cw/2, ch/2, cd/2);
+      const dLFrame = new THREE.Mesh(new THREE.BoxGeometry(0.04, ch-0.06, 0.75), darkMetalMat); dLFrame.position.set(0, 0, 0.375); dLFrame.castShadow = true; doorL.add(dLFrame);
+      const dLHandle = new THREE.Mesh(new THREE.CylinderGeometry(0.015,0.015,0.18,8), darkMetalMat); dLHandle.rotation.x = Math.PI/2; dLHandle.position.set(0.06, 0, 0.68); doorL.add(dLHandle);
+      doorL.userData = { part: 'doorL', name: '左柜门', tag: 'DOOR', isDoor: true, hingeSide: 'left' };
+      g.add(doorL); parts.push(doorL);
+
+      const doorR = new THREE.Group(); doorR.position.set(cw/2, ch/2, cd/2);
+      const dRFrame = new THREE.Mesh(new THREE.BoxGeometry(0.04, ch-0.06, 0.75), darkMetalMat); dRFrame.position.set(0, 0, 0.375); dRFrame.castShadow = true; doorR.add(dRFrame);
+      const dRHandle = new THREE.Mesh(new THREE.CylinderGeometry(0.015,0.015,0.18,8), darkMetalMat); dRHandle.rotation.x = Math.PI/2; dRHandle.position.set(-0.06, 0, 0.68); doorR.add(dRHandle);
+      doorR.userData = { part: 'doorR', name: '右柜门', tag: 'DOOR', isDoor: true, hingeSide: 'right' };
+      g.add(doorR); parts.push(doorR);
+
+      // Battery racks
       const racks = [];
       for (let i=0;i<2;i++) {
-        const rack = new THREE.Group(); rack.position.set(-0.35 + i*0.70, 0.15, 0);
+        const rack = new THREE.Group(); rack.position.set(-0.32 + i*0.64, 0.12, 0);
         for (let r=0;r<4;r++) {
-          const mod = new THREE.Mesh(new THREE.BoxGeometry(0.60, 0.38, 0.82), cellMat.clone()); mod.position.set(0, 0.10 + r*0.42, 0); mod.castShadow = true; rack.add(mod);
-          const led = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.01, 0.01), cellEmissiveMat.clone()); led.position.set(0.31, 0.20 + r*0.42, 0.38); led.userData = { isLed: true, baseIntensity: 0.45, phase: (i*4+r)*0.3 }; rack.add(led);
+          const mod = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.36, 0.78), cellMat.clone()); mod.position.set(0, 0.10 + r*0.40, 0); mod.castShadow = true; mod.receiveShadow = true; rack.add(mod);
+          const led = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.01, 0.01), cellEmissiveMat.clone()); led.position.set(0.285, 0.18 + r*0.40, 0.36); led.userData = { isLed: true, baseIntensity: 0.45, phase: (i*4+r)*0.3 }; rack.add(led);
         }
         rack.userData = { part: 'rack' + i, name: '电池架 ' + (i+1), tag: 'RACK', desc: '磷酸铁锂电池架，单架 50kWh，4层模组设计。', specs: ['50 kWh', '768 Vdc', '≥8000 次', 'IP55'] };
         g.add(rack); racks.push(rack); parts.push(rack);
       }
 
-      // PCS/BMS on right side behind racks (visible when exploded)
-      const pcs = new THREE.Group(); pcs.position.set(0.55, 0.6, 0);
-      const pcsBody = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.9, 0.85), pcsMat); pcsBody.castShadow = true; pcs.add(pcsBody);
+      // PCS/BMS on right rear
+      const pcs = new THREE.Group(); pcs.position.set(0.50, 0.55, -0.15);
+      const pcsBody = new THREE.Mesh(new THREE.BoxGeometry(0.30, 0.85, 0.70), pcsMat); pcsBody.castShadow = true; pcs.add(pcsBody);
       pcs.userData = { part: 'pcs', name: 'PCS 变流器', tag: 'PCS', desc: '户外柜内置 PCS，最大功率 100kW，转换效率 ≥98.6%。', specs: ['100 kW', '≥98.6%', 'IP54', '≤30ms'] };
       g.add(pcs); parts.push(pcs);
 
-      const bms = new THREE.Group(); bms.position.set(0.55, 1.35, 0);
-      const bmsBody = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.4, 0.85), bmsMat); bmsBody.castShadow = true; bms.add(bmsBody);
+      const bms = new THREE.Group(); bms.position.set(0.50, 1.30, -0.15);
+      const bmsBody = new THREE.Mesh(new THREE.BoxGeometry(0.30, 0.38, 0.70), bmsMat); bmsBody.castShadow = true; bms.add(bmsBody);
       bms.userData = { part: 'bms', name: 'BMS 控制器', tag: 'BMS', desc: '三级 BMS 架构，实时监控电芯级电压、温度与 SOC。', specs: ['3级架构', '±2mV', '≤50ms', 'SOX≥3%'] };
       g.add(bms); parts.push(bms);
 
       // HVAC side unit
-      const hvac = new THREE.Group(); hvac.position.set(-0.55, 0.5, 0);
-      const hvacBody = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.8, 0.85), hvacMat); hvacBody.castShadow = true; hvac.add(hvacBody);
-      const fan = new THREE.Group(); fan.position.set(-0.18, 0, 0.44);
-      for (let i=0;i<4;i++) { const b = new THREE.Mesh(new THREE.BoxGeometry(0.20, 0.03, 0.01), darkMetalMat); b.rotation.z = i*Math.PI/2; fan.add(b); }
+      const hvac = new THREE.Group(); hvac.position.set(-0.52, 0.48, 0);
+      const hvacBody = new THREE.Mesh(new THREE.BoxGeometry(0.30, 0.78, 0.82), hvacMat); hvacBody.castShadow = true; hvac.add(hvacBody);
+      const fan = new THREE.Group(); fan.position.set(-0.16, 0, 0.42);
+      for (let i=0;i<4;i++) { const b = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.03, 0.01), darkMetalMat); b.rotation.z = i*Math.PI/2; fan.add(b); }
       hvac.add(fan); hvac.userData = { part: 'hvac', name: '侧置空调系统', tag: 'HVAC', desc: '侧置风冷模块，维持电芯温差 ≤3℃。', specs: ['ΔT≤3℃', '8kW', 'IP55', '-20~45℃'] };
       g.add(hvac); parts.push(hvac);
 
       // Fire suppression top
-      const fire = new THREE.Group(); fire.position.set(0, ch - 0.08, 0);
-      const pipe = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 1.2, 8), pipeMat); pipe.rotation.z = Math.PI/2; fire.add(pipe);
-      [-0.4, 0, 0.4].forEach(x => { const n = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.12, 8), pipeMat); n.position.set(x, -0.06, 0); n.rotation.x = Math.PI/3; fire.add(n); });
+      const fire = new THREE.Group(); fire.position.set(0, ch - 0.06, 0);
+      const pipe = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 1.1, 8), pipeMat); pipe.rotation.z = Math.PI/2; fire.add(pipe);
+      [-0.35, 0, 0.35].forEach(x => { const n = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.10, 8), pipeMat); n.position.set(x, -0.05, 0); n.rotation.x = Math.PI/3; fire.add(n); });
       fire.userData = { part: 'fire', name: '顶部消防系统', tag: 'FIRE', desc: '柜级消防探测与全氟己酮灭火，响应时间 ≤3s。', specs: ['柜级', '≤3s', '全氟己酮', 'IP55'] };
       g.add(fire); parts.push(fire);
 
-      // Labels
       const labels = new THREE.Group(); g.add(labels);
-      addLabel(labels, 'PCS 100kW', 0.55, 1.1, 0.45);
-      addLabel(labels, 'HVAC', -0.55, 0.95, 0.45);
+      addLabel(labels, 'PCS 100kW', 0.50, 1.0, 0.25);
+      addLabel(labels, 'HVAC', -0.52, 0.92, 0.45);
 
-      return { group: g, parts, animatables: { fan }, labels };
+      return { group: g, parts, animatables: { fan }, labels, doors: [doorL, doorR] };
     }
 
     // ---------- Container Large Storage ----------
     function buildContainer() {
       const g = new THREE.Group();
       const parts = [];
-      const shellW = 13.6, shellH = 3.0, shellD = 3.0;
+      const shellW = 13.4, shellH = 2.95, shellD = 2.95;
       const halfW = shellW/2, halfH = shellH/2, halfD = shellD/2;
 
       const shellGroup = new THREE.Group();
       function corrugatedWall(w, h, depth, vertical, segments) {
         const gg = new THREE.Group(); const segSize = (vertical ? w : h) / segments;
         const geo = vertical ? new THREE.BoxGeometry(segSize*0.85, h, depth) : new THREE.BoxGeometry(w, segSize*0.85, depth);
-        for (let i=0;i<segments;i++) { const m = new THREE.Mesh(geo, shellMat.clone()); const offset = (i - (segments-1)/2) * segSize; m.position.set(vertical ? offset : 0, vertical ? 0 : offset, depth>0 ? 0.02 : -0.02); m.castShadow = true; m.receiveShadow = true; gg.add(m); }
+        for (let i=0;i<segments;i++) { const m = new THREE.Mesh(geo, shellMat.clone()); const offset = (i - (segments-1)/2) * segSize; m.position.set(vertical ? offset : 0, vertical ? 0 : offset, depth>0 ? 0.015 : -0.015); m.castShadow = true; m.receiveShadow = true; gg.add(m); }
         return gg;
       }
       const floorPlate = new THREE.Mesh(new THREE.BoxGeometry(shellW, 0.08, shellD), shellMat.clone()); floorPlate.position.y = -halfH; floorPlate.receiveShadow = true; shellGroup.add(floorPlate);
@@ -399,96 +456,88 @@
       const backWall = corrugatedWall(shellW, shellH, 0.08, true, 30); backWall.position.set(0, 0, -halfD); shellGroup.add(backWall);
       const frontWall = corrugatedWall(shellW, shellH, 0.08, true, 30); frontWall.position.set(0, 0, halfD); shellGroup.add(frontWall);
       const topWall = corrugatedWall(shellW, shellD, 0.08, true, 30); topWall.rotation.x = Math.PI/2; topWall.position.set(0, halfH, 0); shellGroup.add(topWall);
-      [[-halfW,halfD], [halfW,halfD], [-halfW,-halfD], [halfW,-halfD]].forEach(([x,z]) => { [-halfH, halfH].forEach(y => { const c = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.35,0.35), darkMetalMat); c.position.set(x,y,z); c.castShadow = true; shellGroup.add(c); }); });
-      const doorGroup = new THREE.Group(); doorGroup.position.set(0,0,halfD);
-      const dL = new THREE.Mesh(new THREE.BoxGeometry(0.1, shellH-0.2, 0.14), shellMat.clone()); dL.position.set(-2.1,0,0); doorGroup.add(dL);
-      const dR = new THREE.Mesh(new THREE.BoxGeometry(0.1, shellH-0.2, 0.14), shellMat.clone()); dR.position.set(2.1,0,0); doorGroup.add(dR);
-      const dT = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.1, 0.14), shellMat.clone()); dT.position.set(0, halfH-0.05, 0); doorGroup.add(dT);
-      const dB = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.1, 0.14), shellMat.clone()); dB.position.set(0, -halfH+0.05, 0); doorGroup.add(dB);
-      shellGroup.add(doorGroup);
-      shellGroup.userData = { part: 'shell', name: '储能集装箱壳体', tag: 'SHELL', desc: '20尺标准集装箱结构，波纹侧板设计，表面喷涂防腐涂层。', specs: ['20尺', 'IP55', 'C5防腐', 'ISO668'] };
+      // Corner castings
+      [[-halfW,halfD], [halfW,halfD], [-halfW,-halfD], [halfW,-halfD]].forEach(([x,z]) => { [-halfH, halfH].forEach(y => { const c = new THREE.Mesh(new THREE.BoxGeometry(0.32,0.32,0.32), darkMetalMat); c.position.set(x,y,z); c.castShadow = true; shellGroup.add(c); }); });
+      // Lock rods on doors
+      [-2.0, 2.0].forEach(x => {
+        const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02, shellH-0.3, 8), darkMetalMat); rod.position.set(x, 0, halfD+0.04); shellGroup.add(rod);
+        const cam = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.04, 0.04), darkMetalMat); cam.position.set(x, halfH/2-0.1, halfD+0.06); shellGroup.add(cam);
+        const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.015,0.015, 0.18, 8).rotateX(Math.PI/2), darkMetalMat); handle.position.set(x, -halfH/2+0.2, halfD+0.07); shellGroup.add(handle);
+      });
+      // Nameplate
+      const plate = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.25, 0.01), new THREE.MeshStandardMaterial({color:0x111111, roughness:0.4})); plate.position.set(0, halfH/2, halfD+0.04); shellGroup.add(plate);
+      shellGroup.userData = { part: 'shell', name: '储能集装箱壳体', tag: 'SHELL', desc: '20尺标准集装箱结构，波纹侧板，门锁杆，表面喷涂防腐涂层。', specs: ['20尺', 'IP55', 'C5防腐', 'ISO668'] };
       g.add(shellGroup); parts.push(shellGroup);
 
-      const floorPad = new THREE.Mesh(new THREE.BoxGeometry(shellW-0.2, 0.08, shellD-0.2), new THREE.MeshPhysicalMaterial({color:0x040a10, roughness:0.15, metalness:0.5, clearcoat:0.3}));
+      const floorPad = new THREE.Mesh(new THREE.BoxGeometry(shellW-0.2, 0.08, shellD-0.2), new THREE.MeshPhysicalMaterial({color:0x040a10, roughness:0.14, metalness:0.55, clearcoat:0.35}));
       floorPad.position.y = -halfH + 0.12; floorPad.receiveShadow = true; g.add(floorPad);
 
+      // Racks
       const racks = [];
       function createBatteryRack(x, label) {
-        const rackGroup = new THREE.Group(); rackGroup.position.set(x, -halfH + 0.85, 0);
-        const fw = 0.66, fh = 2.05, fd = 2.25;
+        const rackGroup = new THREE.Group(); rackGroup.position.set(x, -halfH + 0.82, 0);
+        const fw = 0.64, fh = 2.02, fd = 2.22;
         [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz]) => { const p = new THREE.Mesh(new THREE.BoxGeometry(0.04, fh, 0.04), batteryFrameMat); p.position.set(sx*fw/2, 0, sz*fd/2); p.castShadow = true; rackGroup.add(p); });
         for (let s=0;s<7;s++) { const shelf = new THREE.Mesh(new THREE.BoxGeometry(fw+0.02, 0.02, fd+0.02), batteryFrameMat); shelf.position.set(0, -fh/2 + s*(fh/6.2), 0); shelf.castShadow = true; rackGroup.add(shelf); }
-        const rows=6, cols=3; const mw=0.54, mh=0.25, md=0.64; const modGeo = new THREE.BoxGeometry(mw, mh, md);
+        const rows=6, cols=3; const mw=0.52, mh=0.24, md=0.62; const modGeo = new THREE.BoxGeometry(mw, mh, md);
         for (let r=0;r<rows;r++) { for (let c=0;c<cols;c++) {
           const mod = new THREE.Mesh(modGeo, cellMat.clone()); mod.position.set(0, -fh/2 + 0.14 + r*(mh+0.04) + mh/2, -fd/2 + 0.12 + c*(md+0.06) + md/2); mod.castShadow = true; rackGroup.add(mod);
-          const led = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.015, 0.015), cellEmissiveMat.clone()); led.position.set(mw/2+0.008, mod.position.y, mod.position.z + md/2 - 0.05); led.userData = { isLed: true, baseIntensity: 0.4 + Math.random()*0.2, phase: Math.random()*Math.PI*2 }; rackGroup.add(led);
+          const led = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.012, 0.012), cellEmissiveMat.clone()); led.position.set(mw/2+0.006, mod.position.y, mod.position.z + md/2 - 0.05); led.userData = { isLed: true, baseIntensity: 0.4 + Math.random()*0.2, phase: Math.random()*Math.PI*2 }; rackGroup.add(led);
         }}
         const panel = new THREE.Mesh(new THREE.BoxGeometry(fw+0.02, fh, 0.02), darkMetalMat); panel.position.set(0,0,fd/2+0.01); rackGroup.add(panel);
-        const panelLabel = new THREE.Mesh(new THREE.PlaneGeometry(0.4, 0.2), new THREE.MeshBasicMaterial({ map: makePanelCanvas(label), transparent: true })); panelLabel.position.set(0, 0.6, fd/2+0.025); rackGroup.add(panelLabel);
-        for (let i=0;i<12;i++) { const stripLed = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.035, 0.01), cellEmissiveMat.clone()); stripLed.position.set(-fw/3 + (i%6)*0.11, 0.45 - Math.floor(i/6)*0.35, fd/2+0.025); stripLed.userData = { isLed: true, baseIntensity: 0.45, phase: i*0.25 }; rackGroup.add(stripLed); }
-        [-0.2,0.2].forEach(hx => { const h = new THREE.Mesh(new THREE.CylinderGeometry(0.01,0.01,0.12,8).rotateZ(Math.PI/2), darkMetalMat); h.position.set(hx, 0, fd/2+0.04); rackGroup.add(h); });
+        const panelLabel = new THREE.Mesh(new THREE.PlaneGeometry(0.36, 0.18), new THREE.MeshBasicMaterial({ map: makePanelCanvas(label), transparent: true })); panelLabel.position.set(0, 0.58, fd/2+0.025); rackGroup.add(panelLabel);
+        for (let i=0;i<12;i++) { const stripLed = new THREE.Mesh(new THREE.BoxGeometry(0.032, 0.032, 0.01), cellEmissiveMat.clone()); stripLed.position.set(-fw/3 + (i%6)*0.10, 0.44 - Math.floor(i/6)*0.34, fd/2+0.025); stripLed.userData = { isLed: true, baseIntensity: 0.45, phase: i*0.25 }; rackGroup.add(stripLed); }
+        [-0.18,0.18].forEach(hx => { const h = new THREE.Mesh(new THREE.CylinderGeometry(0.01,0.01,0.11,8).rotateZ(Math.PI/2), darkMetalMat); h.position.set(hx, 0, fd/2+0.04); rackGroup.add(h); });
         rackGroup.userData = { part: 'battery', name: '电池簇 '+label, tag: 'BATTERY', desc: '采用磷酸铁锂电芯，单簇容量 215kWh，支持 1C 充放电，循环寿命超过 8000 次。', specs: ['215 kWh', '768 Vdc', '≥8000 次', 'IP55'] };
         return rackGroup;
       }
-      for (let i=0;i<4;i++) { const rack = createBatteryRack(-3.6 + i*1.0, String(i+1)); g.add(rack); racks.push(rack); parts.push(rack); }
+      for (let i=0;i<4;i++) { const rack = createBatteryRack(-3.5 + i*0.98, String(i+1)); g.add(rack); racks.push(rack); parts.push(rack); }
 
-      const pcsGroup = new THREE.Group(); pcsGroup.position.set(2.0, -halfH + 0.95, 0);
-      const pcsBody = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.8, 2.0), pcsMat); pcsBody.castShadow = true; pcsGroup.add(pcsBody);
-      for (let i=0;i<16;i++) { const fin = new THREE.Mesh(new THREE.BoxGeometry(1.28, 0.02, 0.16), darkMetalMat); fin.position.set(0, -0.75 + i*0.15, 1.0); pcsGroup.add(fin); }
-      const pcsLed = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.03,16), new THREE.MeshStandardMaterial({color:0x00d9a5, emissive:0x00d9a5, emissiveIntensity:0.9})); pcsLed.rotation.x = Math.PI/2; pcsLed.position.set(0.35,0.55,1.01); pcsLed.userData={isLed:true, baseIntensity:0.9, phase:0}; pcsGroup.add(pcsLed);
+      const pcsGroup = new THREE.Group(); pcsGroup.position.set(1.9, -halfH + 0.92, 0);
+      const pcsBody = new THREE.Mesh(new THREE.BoxGeometry(1.15, 1.75, 1.95), pcsMat); pcsBody.castShadow = true; pcsGroup.add(pcsBody);
+      for (let i=0;i<16;i++) { const fin = new THREE.Mesh(new THREE.BoxGeometry(1.22, 0.02, 0.15), darkMetalMat); fin.position.set(0, -0.72 + i*0.14, 0.98); pcsGroup.add(fin); }
+      const pcsLed = new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.045,0.03,16), new THREE.MeshStandardMaterial({color:0x00d9a5, emissive:0x00d9a5, emissiveIntensity:0.9})); pcsLed.rotation.x = Math.PI/2; pcsLed.position.set(0.32,0.52,0.99); pcsLed.userData={isLed:true, baseIntensity:0.9, phase:0}; pcsGroup.add(pcsLed);
       pcsGroup.userData = { part: 'pcs', name: '储能变流器 (PCS)', tag: 'PCS', desc: '双向 AC/DC 变流器，支持并网/离网运行，最大功率 630kW，转换效率 ≥98.6%。', specs: ['630 kW', '≥98.6%', 'IP54', '≤30ms'] };
       g.add(pcsGroup); parts.push(pcsGroup);
 
-      const bmsGroup = new THREE.Group(); bmsGroup.position.set(3.4, -halfH + 0.8, 0);
-      const bmsBody = new THREE.Mesh(new THREE.BoxGeometry(0.85, 1.6, 1.7), bmsMat); bmsBody.castShadow = true; bmsGroup.add(bmsBody);
+      const bmsGroup = new THREE.Group(); bmsGroup.position.set(3.25, -halfH + 0.78, 0);
+      const bmsBody = new THREE.Mesh(new THREE.BoxGeometry(0.82, 1.55, 1.65), bmsMat); bmsBody.castShadow = true; bmsGroup.add(bmsBody);
       bmsGroup.userData = { part: 'bms', name: '电池管理系统 (BMS)', tag: 'BMS', desc: '三级 BMS 架构，实现电芯级电压/温度/SOC 实时监控，支持故障预警与主动均衡。', specs: ['3级架构', '±2mV', '≤50ms', 'SOX≥3%'] };
       g.add(bmsGroup); parts.push(bmsGroup);
 
-      const hvacGroup = new THREE.Group(); hvacGroup.position.set(-5.2, -halfH + 0.95, 0);
-      const hvacBody = new THREE.Mesh(new THREE.BoxGeometry(1.0, 1.8, 1.85), hvacMat); hvacBody.castShadow = true; hvacGroup.add(hvacBody);
-      const fan = new THREE.Group(); fan.position.set(0,0,0.93);
-      for (let i=0;i<5;i++) { const blade = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.06, 0.015), darkMetalMat); blade.rotation.z = i*Math.PI/2.5; fan.add(blade); }
+      const hvacGroup = new THREE.Group(); hvacGroup.position.set(-5.0, -halfH + 0.92, 0);
+      const hvacBody = new THREE.Mesh(new THREE.BoxGeometry(0.95, 1.75, 1.80), hvacMat); hvacBody.castShadow = true; hvacGroup.add(hvacBody);
+      const fan = new THREE.Group(); fan.position.set(0,0,0.91);
+      for (let i=0;i<5;i++) { const blade = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.06, 0.015), darkMetalMat); blade.rotation.z = i*Math.PI/2.5; fan.add(blade); }
       hvacGroup.add(fan); hvacGroup.userData = { part: 'hvac', name: '液冷温控系统 (HVAC)', tag: 'HVAC', desc: '智能液冷温控，将电池包温差控制在 3℃ 以内，系统能耗降低 30%。', specs: ['ΔT≤3℃', '30kW', 'IP55', '-30~55℃'] };
       g.add(hvacGroup); parts.push(hvacGroup);
 
       const pipeGroup = new THREE.Group();
-      const pipePath = new THREE.CatmullRomCurve3([new THREE.Vector3(-5.8, 1.1, -0.9), new THREE.Vector3(-2.5, 1.2, -0.9), new THREE.Vector3(0, 1.25, -0.9), new THREE.Vector3(2.8, 1.2, -0.9), new THREE.Vector3(4.8, 1.1, -0.9)]);
-      pipeGroup.add(new THREE.Mesh(new THREE.TubeGeometry(pipePath, 40, 0.045, 10, false), pipeMat));
-      [-3.6,-2.6,-1.6,-0.6,0.4,1.4,2.4,3.4].forEach(x => { const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.2,8), pipeMat); nozzle.position.set(x, 1.15 - 0.03, -0.9 + 0.08); nozzle.rotation.x = Math.PI/3.5; pipeGroup.add(nozzle); const branch = new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,0.15,8), pipeMat); branch.position.set(x, 1.18, -0.9); branch.rotation.x = Math.PI/2; pipeGroup.add(branch); });
+      const pipePath = new THREE.CatmullRomCurve3([new THREE.Vector3(-5.6, 1.08, -0.85), new THREE.Vector3(-2.4, 1.18, -0.85), new THREE.Vector3(0, 1.22, -0.85), new THREE.Vector3(2.7, 1.18, -0.85), new THREE.Vector3(4.7, 1.08, -0.85)]);
+      pipeGroup.add(new THREE.Mesh(new THREE.TubeGeometry(pipePath, 40, 0.042, 10, false), pipeMat));
+      [-3.5,-2.5,-1.5,-0.5,0.4,1.3,2.3,3.3].forEach(x => { const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.028,0.028,0.18,8), pipeMat); nozzle.position.set(x, 1.12 - 0.03, -0.85 + 0.07); nozzle.rotation.x = Math.PI/3.5; pipeGroup.add(nozzle); const branch = new THREE.Mesh(new THREE.CylinderGeometry(0.022,0.022,0.14,8), pipeMat); branch.position.set(x, 1.15, -0.85); branch.rotation.x = Math.PI/2; pipeGroup.add(branch); });
       pipeGroup.userData = { part: 'fire', name: '多级消防系统', tag: 'FIRE', desc: 'Pack 级 + 簇级 + 系统级多级消防，采用全氟己酮灭火剂，早期探测响应时间 ≤3s。', specs: ['Pack级', '≤3s', '全氟己酮', 'IP55'] };
       g.add(pipeGroup); parts.push(pipeGroup);
 
       const labels = new THREE.Group(); g.add(labels);
-      racks.forEach((rack,i) => addLabel(labels, 'SOC 78%', rack.position.x, rack.position.y+1.2, rack.position.z+1.2));
-      addLabel(labels, 'PCS 420kW', pcsGroup.position.x, pcsGroup.position.y+1.1, pcsGroup.position.z+1.1);
-      addLabel(labels, 'BMS 在线', bmsGroup.position.x, bmsGroup.position.y+1.0, bmsGroup.position.z+0.9);
-      addLabel(labels, 'HVAC 28°C', hvacGroup.position.x, hvacGroup.position.y+1.1, hvacGroup.position.z+1.0);
+      racks.forEach((rack,i) => addLabel(labels, 'SOC 78%', rack.position.x, rack.position.y+1.18, rack.position.z+1.2));
+      addLabel(labels, 'PCS 420kW', pcsGroup.position.x, pcsGroup.position.y+1.05, pcsGroup.position.z+1.05);
+      addLabel(labels, 'BMS 在线', bmsGroup.position.x, bmsGroup.position.y+0.95, bmsGroup.position.z+0.88);
+      addLabel(labels, 'HVAC 28°C', hvacGroup.position.x, hvacGroup.position.y+1.05, hvacGroup.position.z+0.95);
 
-      return { group: g, parts, animatables: { fan }, labels };
+      return { group: g, parts, animatables: { fan }, labels, doors: [] };
     }
 
-    // ===== Assemble products =====
     function createProduct(key, builder) {
       const data = builder();
       const group = data.group;
       group.visible = false;
       scene.add(group);
-
-      // Store original positions for explosion
       const originalPos = new Map();
       data.parts.forEach(p => originalPos.set(p.uuid, p.position.clone()));
-
-      // Particles
-      const particleGroup = new THREE.Group(); scene.add(particleGroup);
-      const coolGeo = new THREE.BufferGeometry();
-      const coolCount = 60; const coolPos = new Float32Array(coolCount*3); const coolVel = [];
-      for (let i=0;i<coolCount;i++) { coolPos[i*3]=0; coolPos[i*3+1]=0; coolPos[i*3+2]=0; coolVel.push({vx:0,vy:0,vz:0,life:0}); }
-      coolGeo.setAttribute('position', new THREE.BufferAttribute(coolPos, 3));
-      const coolMat = new THREE.PointsMaterial({color:0xaaddff, size:0.06, transparent:true, opacity:0.3, blending: THREE.AdditiveBlending});
-      const coolParticles = new THREE.Points(coolGeo, coolMat); particleGroup.add(coolParticles);
-      particleGroup.visible = false;
-
-      products[key] = { group, parts: data.parts, originalPos, particleGroup, coolParticles, coolVel, animatables: data.animatables || {}, labels: data.labels || {} };
+      const doorOpen = new Map();
+      (data.doors || []).forEach(d => doorOpen.set(d.uuid, false));
+      products[key] = { group, parts: data.parts, originalPos, animatables: data.animatables || {}, labels: data.labels || {}, doors: data.doors || [], doorOpen };
     }
 
     createProduct('stacked', buildStacked);
@@ -500,96 +549,88 @@
     const urlParams = new URLSearchParams(window.location.search);
     const initialProduct = ['stacked','cabinet','container'].includes(urlParams.get('product')) ? urlParams.get('product') : 'stacked';
 
-    // ===== Switch product =====
     function switchProduct(key) {
       if (currentKey === key) return;
-      // hide current
       products[currentKey].group.visible = false;
-      products[currentKey].particleGroup.visible = false;
-      // reset state
       autoRotate = true; exploded = false; sectionMode = false; tourMode = false; tourIndex = 0;
-      updateBtnText();
-      document.getElementById('info-panel').classList.add('hidden');
-      // show new
+      updateBtnText(); document.getElementById('info-panel').classList.add('hidden');
       currentKey = key;
-      Object.keys(products).forEach(k => { products[k].group.visible = (k===key); products[k].particleGroup.visible = (k===key); });
-      // camera reset per product
-      const camMap = { stacked: {pos:[3,2.5,5], target:[0,1.1,0]}, cabinet: {pos:[4,3,6], target:[0,1.0,0]}, container: {pos:[16,10,20], target:[0,0,0]} };
+      Object.keys(products).forEach(k => products[k].group.visible = (k===key));
+      const camMap = { stacked: {pos:[3.5,2.8,6], target:[0,1.1,0]}, cabinet: {pos:[4.2,3.2,7], target:[0,1.0,0]}, container: {pos:[15,9,18], target:[0,0,0]} };
       const cfg = camMap[key];
       gsapTo(camera.position, {x:cfg.pos[0], y:cfg.pos[1], z:cfg.pos[2]}, 0.8);
       gsapTo(controls.target, {x:cfg.target[0], y:cfg.target[1], z:cfg.target[2]}, 0.8);
-      // update tabs
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.key === key));
-      // rebuild nav
       buildNav();
-      // reset positions
-      products[key].parts.forEach(p => { const orig = products[key].originalPos.get(p.uuid); p.position.copy(orig); });
+      resetPositions();
       applySectionMode();
     }
 
     // ===== Interactions =====
     const raycaster = new THREE.Raycaster(); const mouse = new THREE.Vector2(); let hoveredObj = null;
     function findPartGroup(mesh) { let curr = mesh; while (curr) { if (curr.userData && curr.userData.part) return curr; curr = curr.parent; } return null; }
-    function setEmissive(obj, value) { obj.traverse(child => { if (child.isMesh && child.material && child.material.emissive && !child.userData.isLed) { child.userData._origEmissive = child.userData._origEmissive || child.material.emissive.getHex(); child.material.emissive.setHex(value ? 0x00d9a5 : child.userData._origEmissive); child.material.emissiveIntensity = value ? 0.45 : 0; } }); }
+    function setEmissive(obj, value) { obj.traverse(child => { if (child.isMesh && child.material && child.material.emissive && !child.userData.isLed) { child.userData._origEmissive = child.userData._origEmissive || child.material.emissive.getHex(); child.material.emissive.setHex(value ? 0x00d9a5 : child.userData._origEmissive); child.material.emissiveIntensity = value ? 0.5 : 0; } }); }
     function onPointerMove(e) {
       mouse.x = (e.clientX / window.innerWidth) * 2 - 1; mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
       const intersects = raycaster.intersectObjects(products[currentKey].group.children, true);
       if (intersects.length > 0) {
         const group = findPartGroup(intersects[0].object);
-        if (group && group !== hoveredObj) { if (hoveredObj) setEmissive(hoveredObj, false); hoveredObj = group; setEmissive(hoveredObj, true); document.body.style.cursor = 'pointer'; showTooltip(group.userData.name || '部件', e.clientX, e.clientY); }
+        if (group && group !== hoveredObj) { if (hoveredObj) setEmissive(hoveredObj, false); hoveredObj = group; setEmissive(hoveredObj, true); document.body.style.cursor = group.userData.isDoor ? 'pointer' : 'pointer'; showTooltip(group.userData.name || '部件', e.clientX, e.clientY); }
       } else { if (hoveredObj) { setEmissive(hoveredObj, false); hoveredObj = null; document.body.style.cursor = 'default'; hideTooltip(); } }
     }
-    function onClick(e) { mouse.x = (e.clientX / window.innerWidth) * 2 - 1; mouse.y = -(e.clientY / window.innerHeight) * 2 + 1; raycaster.setFromCamera(mouse, camera); const intersects = raycaster.intersectObjects(products[currentKey].group.children, true); if (intersects.length > 0) { const group = findPartGroup(intersects[0].object); if (group) focusPart(group); } }
+    function onClick(e) {
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1; mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(products[currentKey].group.children, true);
+      if (intersects.length > 0) {
+        const group = findPartGroup(intersects[0].object);
+        if (!group) return;
+        if (group.userData.isDoor) { toggleDoor(group); }
+        else { focusPart(group); }
+      }
+    }
     window.addEventListener('mousemove', onPointerMove); window.addEventListener('click', onClick);
 
     const tooltip = document.getElementById('tooltip');
     function showTooltip(text, x, y) { tooltip.textContent = text; tooltip.classList.remove('hidden'); tooltip.style.left = (x + 12) + 'px'; tooltip.style.top = (y + 12) + 'px'; }
     function hideTooltip() { tooltip.classList.add('hidden'); }
 
-    function showInfo(group) { const data = group.userData; if (!data || !data.part) return; document.getElementById('info-tag').textContent = data.tag || 'COMPONENT'; document.getElementById('info-title').textContent = data.name || '部件'; document.getElementById('info-desc').textContent = data.desc || ''; [1,2,3,4].forEach(i => document.getElementById('info-spec'+i).textContent = (data.specs && data.specs[i-1]) || '-'); const panel = document.getElementById('info-panel'); panel.classList.remove('hidden'); panel.classList.add('info-enter'); highlightNav(group.userData.part); }
-    document.getElementById('btn-close-info').addEventListener('click', () => { document.getElementById('info-panel').classList.add('hidden'); });
-
-    function focusPart(group) { autoRotate = false; tourMode = false; updateBtnText(); const box = new THREE.Box3().setFromObject(group); const center = box.getCenter(new THREE.Vector3()); const size = box.getSize(new THREE.Vector3()); const maxDim = Math.max(size.x, size.y, size.z); const dist = Math.max(maxDim * 1.8, 3.5); const offset = camera.position.clone().sub(controls.target).normalize().multiplyScalar(dist); const endPos = center.clone().add(offset); gsapTo(camera.position, {x:endPos.x, y:endPos.y, z:endPos.z}, 0.9); gsapTo(controls.target, {x:center.x, y:center.y, z:center.z}, 0.9); showInfo(group); }
-
-    // Navigation
-    const navContainer = document.getElementById('part-nav'); const navMap = new Map();
-    function buildNav() {
-      navContainer.innerHTML = ''; navMap.clear();
-      const parts = products[currentKey].parts;
-      // deduplicate by part key
-      const seen = new Set();
-      parts.forEach((p, idx) => {
-        const key = p.userData.part;
-        if (!key || seen.has(key)) return;
-        seen.add(key);
-        const el = document.createElement('div');
-        el.className = 'nav-item px-3 py-2 rounded cursor-pointer text-sm text-slate-300 flex items-center justify-between';
-        el.innerHTML = `<span>${p.userData.name}</span><span class="text-xs text-slate-500">${idx+1}</span>`;
-        el.addEventListener('click', () => focusPart(p));
-        navContainer.appendChild(el); navMap.set(key, el);
-      });
+    function toggleDoor(doorGroup) {
+      const prod = products[currentKey];
+      const isOpen = prod.doorOpen.get(doorGroup.uuid);
+      prod.doorOpen.set(doorGroup.uuid, !isOpen);
+      const targetAngle = isOpen ? 0 : (doorGroup.userData.hingeSide === 'left' ? -Math.PI / 1.6 : Math.PI / 1.6);
+      gsapTo(doorGroup.rotation, { y: targetAngle }, 0.6);
     }
+
+    function showInfo(group) { const data = group.userData; if (!data || !data.part) return; document.getElementById('info-tag').textContent = data.tag || 'COMPONENT'; document.getElementById('info-title').textContent = data.name || '部件'; document.getElementById('info-desc').textContent = data.desc || ''; [1,2,3,4].forEach(i => document.getElementById('info-spec'+i).textContent = (data.specs && data.specs[i-1]) || '-'); const panel = document.getElementById('info-panel'); panel.classList.remove('hidden'); panel.classList.add('info-enter'); highlightNav(data.part); }
+    document.getElementById('btn-close-info').addEventListener('click', () => document.getElementById('info-panel').classList.add('hidden'));
+
+    function focusPart(group) { autoRotate = false; tourMode = false; updateBtnText(); const box = new THREE.Box3().setFromObject(group); const center = box.getCenter(new THREE.Vector3()); const size = box.getSize(new THREE.Vector3()); const maxDim = Math.max(size.x, size.y, size.z); const dist = Math.max(maxDim * 1.9, 3.8); const offset = camera.position.clone().sub(controls.target).normalize().multiplyScalar(dist); const endPos = center.clone().add(offset); gsapTo(camera.position, {x:endPos.x, y:endPos.y, z:endPos.z}, 0.9); gsapTo(controls.target, {x:center.x, y:center.y, z:center.z}, 0.9); showInfo(group); }
+
+    const navContainer = document.getElementById('part-nav'); const navMap = new Map();
+    function buildNav() { navContainer.innerHTML = ''; navMap.clear(); const seen = new Set(); products[currentKey].parts.forEach((p, idx) => { const key = p.userData.part; if (!key || seen.has(key)) return; seen.add(key); const el = document.createElement('div'); el.className = 'nav-item px-3 py-2 rounded cursor-pointer text-sm text-slate-300 flex items-center justify-between'; el.innerHTML = `<span>${p.userData.name}</span><span class="text-xs text-slate-500">${idx+1}</span>`; el.addEventListener('click', () => focusPart(p)); navContainer.appendChild(el); navMap.set(key, el); }); }
     function highlightNav(part) { navMap.forEach((el, key) => el.classList.toggle('active', key === part)); }
 
-    // Buttons
     function updateBtnText() { document.getElementById('btn-rotate').textContent = autoRotate ? '停止旋转' : '自动旋转'; document.getElementById('btn-explode').textContent = exploded ? '合拢视图' : '爆炸图'; document.getElementById('btn-section').textContent = sectionMode ? '关闭剖面' : '剖面视图'; document.getElementById('btn-tour').innerHTML = tourMode ? '<span class="w-2 h-2 rounded-full bg-black/60 pulse-dot"></span> 停止导览' : '<span class="w-2 h-2 rounded-full bg-black/60 pulse-dot"></span> 开启自动导览'; }
     document.getElementById('btn-rotate').addEventListener('click', () => { autoRotate = !autoRotate; if (tourMode) tourMode = false; updateBtnText(); });
     document.getElementById('btn-explode').addEventListener('click', toggleExplode);
     document.getElementById('btn-section').addEventListener('click', () => { sectionMode = !sectionMode; updateBtnText(); applySectionMode(); });
     document.getElementById('btn-reset').addEventListener('click', resetView);
-    document.getElementById('btn-tour').addEventListener('click', () => { tourMode = !tourMode; if (tourMode) { autoRotate = false; exploded = false; updateBtnText(); resetPositions(); applySectionMode(); tourIndex = 0; tourNext(); } else { updateBtnText(); } });
+    document.getElementById('btn-tour').addEventListener('click', () => { tourMode = !tourMode; if (tourMode) { autoRotate = false; exploded = false; updateBtnText(); resetPositions(); applySectionMode(); closeDoors(); tourIndex = 0; tourNext(); } else { updateBtnText(); } });
     document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => switchProduct(btn.dataset.key)));
 
-    function resetPositions() { products[currentKey].parts.forEach(p => { const orig = products[currentKey].originalPos.get(p.uuid); p.position.copy(orig); }); }
+    function closeDoors() { const prod = products[currentKey]; prod.doors.forEach(d => { if (prod.doorOpen.get(d.uuid)) { prod.doorOpen.set(d.uuid, false); gsapTo(d.rotation, { y: 0 }, 0.5); } }); }
+    function resetPositions() { products[currentKey].parts.forEach(p => { const orig = products[currentKey].originalPos.get(p.uuid); if (orig) p.position.copy(orig); }); }
     function applySectionMode() {
-      const prod = products[currentKey];
-      prod.parts.forEach(p => {
+      products[currentKey].parts.forEach(p => {
         if (p.userData.part === 'shell') {
           p.traverse(child => {
             if (child.isMesh && child.geometry.type === 'BoxGeometry') {
+              const isWall = child.scale.x <= 1.1 && child.scale.y <= 1.1; // crude heuristic
               child.material = sectionMode ? shellCutawayMat.clone() : shellMat.clone();
-              if (sectionMode) { child.material.transparent = true; child.material.opacity = 0.10; child.material.side = THREE.DoubleSide; child.material.depthWrite = false; }
+              if (sectionMode) { child.material.transparent = true; child.material.opacity = 0.08; child.material.side = THREE.DoubleSide; child.material.depthWrite = false; }
             }
           });
         }
@@ -597,48 +638,48 @@
     }
 
     function toggleExplode() {
-      exploded = !exploded; updateBtnText();
+      exploded = !exploded; updateBtnText(); closeDoors();
       const prod = products[currentKey];
       if (currentKey === 'stacked') {
         if (exploded) {
-          prod.parts.filter(p => p.userData.part && p.userData.part.startsWith('stack')).forEach((p, i) => { gsapTo(p.position, { x: p.position.x, y: p.position.y + 0.15 + i*0.25, z: p.position.z + 0.2 }, 0.8); });
-          const topUnit = prod.parts.find(p => p.userData.part === 'pcs'); if (topUnit) gsapTo(topUnit.position, { x: topUnit.position.x, y: topUnit.position.y + 0.6, z: topUnit.position.z + 0.2 }, 0.8);
-          const hvac = prod.parts.find(p => p.userData.part === 'hvac'); if (hvac) gsapTo(hvac.position, { x: hvac.position.x, y: hvac.position.y - 0.3, z: hvac.position.z + 0.2 }, 0.8);
-          const shell = prod.parts.find(p => p.userData.part === 'shell'); if (shell) gsapTo(shell.position, { x: shell.position.x, y: shell.position.y, z: shell.position.z - 0.6 }, 0.8);
+          prod.parts.filter(p => p.userData.part && p.userData.part.startsWith('stack')).forEach((p, i) => { const orig = prod.originalPos.get(p.uuid); gsapTo(p.position, { x: orig.x, y: orig.y + 0.12 + i*0.22, z: orig.z + 0.18 }, 0.8); });
+          const topUnit = prod.parts.find(p => p.userData.part === 'pcs'); if (topUnit) { const orig = prod.originalPos.get(topUnit.uuid); gsapTo(topUnit.position, { x: orig.x, y: orig.y + 0.55, z: orig.z + 0.18 }, 0.8); }
+          const hvac = prod.parts.find(p => p.userData.part === 'hvac'); if (hvac) { const orig = prod.originalPos.get(hvac.uuid); gsapTo(hvac.position, { x: orig.x, y: orig.y - 0.25, z: orig.z + 0.18 }, 0.8); }
+          const shell = prod.parts.find(p => p.userData.part === 'shell'); if (shell) { const orig = prod.originalPos.get(shell.uuid); gsapTo(shell.position, { x: orig.x, y: orig.y, z: orig.z - 0.55 }, 0.8); }
+          prod.doors.forEach(d => { const orig = prod.originalPos.get(d.uuid); gsapTo(d.position, { x: orig.x, y: orig.y, z: orig.z - 0.55 }, 0.8); });
         } else { resetPositions(); }
       } else if (currentKey === 'cabinet') {
         if (exploded) {
           const racks = prod.parts.filter(p => p.userData.part && p.userData.part.startsWith('rack'));
-          racks.forEach((p, i) => { gsapTo(p.position, { x: p.position.x + (i===0 ? -0.6 : 0.6), y: p.position.y, z: p.position.z + 0.3 }, 0.8); });
-          const pcs = prod.parts.find(p => p.userData.part === 'pcs'); if (pcs) gsapTo(pcs.position, { x: pcs.position.x + 0.4, y: pcs.position.y, z: pcs.position.z + 0.3 }, 0.8);
-          const bms = prod.parts.find(p => p.userData.part === 'bms'); if (bms) gsapTo(bms.position, { x: bms.position.x + 0.4, y: bms.position.y, z: bms.position.z + 0.3 }, 0.8);
-          const hvac = prod.parts.find(p => p.userData.part === 'hvac'); if (hvac) gsapTo(hvac.position, { x: hvac.position.x - 0.4, y: hvac.position.y, z: hvac.position.z + 0.3 }, 0.8);
-          const fire = prod.parts.find(p => p.userData.part === 'fire'); if (fire) gsapTo(fire.position, { x: fire.position.x, y: fire.position.y + 0.3, z: fire.position.z + 0.2 }, 0.8);
-          const shell = prod.parts.find(p => p.userData.part === 'shell'); if (shell) gsapTo(shell.position, { x: shell.position.x, y: shell.position.y, z: shell.position.z - 0.6 }, 0.8);
+          racks.forEach((p, i) => { const orig = prod.originalPos.get(p.uuid); gsapTo(p.position, { x: orig.x + (i===0 ? -0.55 : 0.55), y: orig.y, z: orig.z + 0.25 }, 0.8); });
+          const pcs = prod.parts.find(p => p.userData.part === 'pcs'); if (pcs) { const orig = prod.originalPos.get(pcs.uuid); gsapTo(pcs.position, { x: orig.x + 0.35, y: orig.y, z: orig.z + 0.25 }, 0.8); }
+          const bms = prod.parts.find(p => p.userData.part === 'bms'); if (bms) { const orig = prod.originalPos.get(bms.uuid); gsapTo(bms.position, { x: orig.x + 0.35, y: orig.y, z: orig.z + 0.25 }, 0.8); }
+          const hvac = prod.parts.find(p => p.userData.part === 'hvac'); if (hvac) { const orig = prod.originalPos.get(hvac.uuid); gsapTo(hvac.position, { x: orig.x - 0.35, y: orig.y, z: orig.z + 0.25 }, 0.8); }
+          const fire = prod.parts.find(p => p.userData.part === 'fire'); if (fire) { const orig = prod.originalPos.get(fire.uuid); gsapTo(fire.position, { x: orig.x, y: orig.y + 0.25, z: orig.z + 0.15 }, 0.8); }
+          const shell = prod.parts.find(p => p.userData.part === 'shell'); if (shell) { const orig = prod.originalPos.get(shell.uuid); gsapTo(shell.position, { x: orig.x, y: orig.y, z: orig.z - 0.55 }, 0.8); }
+          prod.doors.forEach(d => { const orig = prod.originalPos.get(d.uuid); gsapTo(d.position, { x: orig.x, y: orig.y, z: orig.z - 0.55 }, 0.8); });
         } else { resetPositions(); }
       } else if (currentKey === 'container') {
         if (exploded) {
           const racks = prod.parts.filter(p => p.userData.part === 'battery');
-          racks.forEach((p, i) => { const dir = (i < 2) ? -1 : 1; const offset = (i % 2 === 0) ? 1.9 : 0.85; gsapTo(p.position, { x: prod.originalPos.get(p.uuid).x + dir * offset, y: prod.originalPos.get(p.uuid).y + 0.45, z: prod.originalPos.get(p.uuid).z + 0.45 }, 0.8); });
-          const pcs = prod.parts.find(p => p.userData.part === 'pcs'); if (pcs) gsapTo(pcs.position, { x: prod.originalPos.get(pcs.uuid).x + 2.0, y: prod.originalPos.get(pcs.uuid).y, z: prod.originalPos.get(pcs.uuid).z + 0.9 }, 0.8);
-          const bms = prod.parts.find(p => p.userData.part === 'bms'); if (bms) gsapTo(bms.position, { x: prod.originalPos.get(bms.uuid).x + 2.9, y: prod.originalPos.get(bms.uuid).y, z: prod.originalPos.get(bms.uuid).z + 0.8 }, 0.8);
-          const hvac = prod.parts.find(p => p.userData.part === 'hvac'); if (hvac) gsapTo(hvac.position, { x: prod.originalPos.get(hvac.uuid).x - 2.0, y: prod.originalPos.get(hvac.uuid).y, z: prod.originalPos.get(hvac.uuid).z + 0.8 }, 0.8);
+          racks.forEach((p, i) => { const orig = prod.originalPos.get(p.uuid); const dir = (i < 2) ? -1 : 1; const offset = (i % 2 === 0) ? 1.8 : 0.8; gsapTo(p.position, { x: orig.x + dir * offset, y: orig.y + 0.42, z: orig.z + 0.42 }, 0.8); });
+          const pcs = prod.parts.find(p => p.userData.part === 'pcs'); if (pcs) { const orig = prod.originalPos.get(pcs.uuid); gsapTo(pcs.position, { x: orig.x + 1.9, y: orig.y, z: orig.z + 0.85 }, 0.8); }
+          const bms = prod.parts.find(p => p.userData.part === 'bms'); if (bms) { const orig = prod.originalPos.get(bms.uuid); gsapTo(bms.position, { x: orig.x + 2.8, y: orig.y, z: orig.z + 0.75 }, 0.8); }
+          const hvac = prod.parts.find(p => p.userData.part === 'hvac'); if (hvac) { const orig = prod.originalPos.get(hvac.uuid); gsapTo(hvac.position, { x: orig.x - 1.9, y: orig.y, z: orig.z + 0.75 }, 0.8); }
         } else { resetPositions(); }
       }
     }
 
-    function resetView() { autoRotate = false; exploded = false; sectionMode = false; tourMode = false; applySectionMode(); updateBtnText(); resetPositions(); const cfg = { stacked: {pos:[3,2.5,5], target:[0,1.1,0]}, cabinet: {pos:[4,3,6], target:[0,1.0,0]}, container: {pos:[16,10,20], target:[0,0,0]} }[currentKey]; gsapTo(camera.position, {x:cfg.pos[0], y:cfg.pos[1], z:cfg.pos[2]}, 0.8); gsapTo(controls.target, {x:cfg.target[0], y:cfg.target[1], z:cfg.target[2]}, 0.8); document.getElementById('info-panel').classList.add('hidden'); highlightNav(null); }
+    function resetView() { autoRotate = false; exploded = false; sectionMode = false; tourMode = false; closeDoors(); applySectionMode(); updateBtnText(); resetPositions(); const cfg = { stacked: {pos:[3.5,2.8,6], target:[0,1.1,0]}, cabinet: {pos:[4.2,3.2,7], target:[0,1.0,0]}, container: {pos:[15,9,18], target:[0,0,0]} }[currentKey]; gsapTo(camera.position, {x:cfg.pos[0], y:cfg.pos[1], z:cfg.pos[2]}, 0.8); gsapTo(controls.target, {x:cfg.target[0], y:cfg.target[1], z:cfg.target[2]}, 0.8); document.getElementById('info-panel').classList.add('hidden'); highlightNav(null); }
 
     let tourTimer = null;
-    function tourNext() { if (!tourMode) return; const parts = products[currentKey].parts; const order = parts.map(p => p.userData.part).filter((v,i,a) => v && a.indexOf(v)===i); const key = order[tourIndex % order.length]; const target = parts.find(p => p.userData.part === key); if (target) { if (currentKey !== 'container' && !exploded) { toggleExplode(); } focusPart(target); } tourIndex++; tourTimer = setTimeout(tourNext, 4500); }
+    function tourNext() { if (!tourMode) return; const parts = products[currentKey].parts; const order = parts.map(p => p.userData.part).filter((v,i,a) => v && a.indexOf(v)===i); const key = order[tourIndex % order.length]; const target = parts.find(p => p.userData.part === key); if (target) { if ((currentKey === 'stacked' || currentKey === 'cabinet') && !exploded) { toggleExplode(); } focusPart(target); } tourIndex++; tourTimer = setTimeout(tourNext, 4500); }
 
     window.addEventListener('keydown', (e) => { if (e.code === 'Space') { e.preventDefault(); toggleExplode(); } if (e.key === 'r' || e.key === 'R') resetView(); if (e.key === 'Tab') { e.preventDefault(); document.getElementById('btn-section').click(); } if (e.key >= '1' && e.key <= '6') { const idx = parseInt(e.key)-1; const el = navContainer.children[idx]; if (el) el.click(); } });
 
-    // Tweens
     const tweens = [];
     function gsapTo(target, endProps, durationSeconds) { const startProps = {}; for (const k in endProps) startProps[k] = target[k]; tweens.push({ target, startProps, endProps, duration: durationSeconds, elapsed: 0 }); }
 
-    // Stats simulation
     let statT = 0;
     function updateStats(dt) {
       statT += dt;
@@ -650,52 +691,21 @@
       document.getElementById('stat-temp').textContent = temp.toFixed(1) + ' ℃'; document.getElementById('bar-temp').style.width = Math.max(0, Math.min(100, (temp - 15) / 25 * 100)) + '%';
     }
 
-    // Animation loop
     const clock = new THREE.Clock();
     function animate() {
       requestAnimationFrame(animate);
       const dt = clock.getDelta(); const time = clock.getElapsedTime();
       const prod = products[currentKey];
       if (autoRotate) prod.group.rotation.y += dt * 0.10;
-
-      // fan rotation
       if (prod.animatables.fan) prod.animatables.fan.rotation.z += dt * 8;
-
-      // led pulse
       prod.group.traverse(child => { if (child.userData && child.userData.isLed && child.material && child.material.emissive) { const base = child.userData.baseIntensity || 0.4; const phase = child.userData.phase || 0; child.material.emissiveIntensity = base + 0.15 * Math.sin(time * 3 + phase); } });
-
-      // cooling particles (simple generic updraft from HVAC)
-      const cPos = prod.coolParticles.geometry.attributes.position.array;
-      let hvacPos = new THREE.Vector3();
-      const hvacPart = prod.parts.find(p => p.userData.part === 'hvac');
-      if (hvacPart) hvacPart.getWorldPosition(hvacPos);
-      for (let i=0;i<60;i++) {
-        if (hvacPart) {
-          cPos[i*3] += prod.coolVel[i].vx * dt; cPos[i*3+1] += prod.coolVel[i].vy * dt; cPos[i*3+2] += prod.coolVel[i].vz * dt; prod.coolVel[i].life -= dt * 0.5;
-          if (prod.coolVel[i].life <= 0) {
-            cPos[i*3] = hvacPos.x + (Math.random()-0.5)*0.6; cPos[i*3+1] = hvacPos.y + 0.2; cPos[i*3+2] = hvacPos.z + (Math.random()-0.5)*0.4;
-            prod.coolVel[i].life = 1.0;
-            if (currentKey === 'stacked') { prod.coolVel[i].vx = (Math.random()-0.5)*0.2; prod.coolVel[i].vy = 0.6 + Math.random()*0.4; prod.coolVel[i].vz = (Math.random()-0.5)*0.2; }
-            else if (currentKey === 'cabinet') { prod.coolVel[i].vx = 0.5 + Math.random()*0.3; prod.coolVel[i].vy = (Math.random()-0.5)*0.2; prod.coolVel[i].vz = (Math.random()-0.5)*0.2; }
-            else { prod.coolVel[i].vx = 0.7 + Math.random()*0.6; prod.coolVel[i].vy = (Math.random()-0.5)*0.1; prod.coolVel[i].vz = (Math.random()-0.5)*0.25; }
-          }
-        } else { cPos[i*3]=0; cPos[i*3+1]=-100; cPos[i*3+2]=0; }
-      }
-      prod.coolParticles.geometry.attributes.position.needsUpdate = true;
-
-      // tweens
       for (let i = tweens.length - 1; i >= 0; i--) { const t = tweens[i]; t.elapsed += dt; const p = Math.min(t.elapsed / t.duration, 1); const ease = 1 - Math.pow(1 - p, 3); for (const k in t.endProps) t.target[k] = t.startProps[k] + (t.endProps[k] - t.startProps[k]) * ease; if (p >= 1) tweens.splice(i, 1); }
-
       updateStats(dt); controls.update(); composer.render(); cssRenderer.render(scene, camera);
     }
     animate();
 
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight); composer.setSize(window.innerWidth, window.innerHeight); cssRenderer.setSize(window.innerWidth, window.innerHeight);
-    });
+    window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); composer.setSize(window.innerWidth, window.innerHeight); cssRenderer.setSize(window.innerWidth, window.innerHeight); });
 
-    // Init
     switchProduct(initialProduct);
   </script>
 </body>
